@@ -1,0 +1,13 @@
+# jardin(J) largeur hauteur
+J 6 5
+
+# chocolat(C) position(colonne-ligne) nombre
+C 4-2 1
+C 1-4 3
+
+# rocher(R) position(colonne-ligne)
+R 5-3
+
+# enfant(E) position initiale(colonne-ligne) orientation initiale(N|E|S|W)
+deplacements(A|G|D) nom
+E 1-1 E AADADAGA Julien

@@ -14,8 +14,4 @@ public class Enfant extends AbstractCase {
 		return null;
 	}
 
-	protected void initSymbole(){
-		symbole = null; // trouver une image
-	}
-
 }
