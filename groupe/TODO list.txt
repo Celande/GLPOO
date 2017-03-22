@@ -1,0 +1,10 @@
+- Garder à l'esprit que la première case du tableau est (1,1)
+- Trier les dépendances
+- Créer tous les attributs
+- Créer toutes les méthodes
+- Gérer les collisions (bordure + rocher + chocolat)
+- Gérer l'ajout d'objet (dans le vide, au-delà des bordures, sur d'autres objets)
+- Faire un diagramme de séquence pour :
+	- l'initialisation de TxtTerrain
+	- ce qu'il se passe lorsqu'un enfant bouge
+- Faire l'interface graphique
