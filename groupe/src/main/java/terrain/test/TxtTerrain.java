@@ -9,7 +9,6 @@ import terrain.domain.Terrain;
 public class TxtTerrain {
 	private File file;
     private Terrain terrain;
-    private List<String> entetes;
     
     private static final Logger LOGGER = Logger.getLogger(TxtTerrain.class);
     
