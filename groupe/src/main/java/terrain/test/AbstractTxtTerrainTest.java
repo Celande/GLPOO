@@ -2,14 +2,11 @@ package terrain.test;
 
 import static org.junit.Assert.*;
 import static terrain.domain.abstractcase.Deplacement.AVANT;
-import static terrain.domain.abstractcase.Deplacement.DROITE;
-import static terrain.domain.abstractcase.Deplacement.GAUCHE;
 import static terrain.domain.abstractcase.Orientation.SUD;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
