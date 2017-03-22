@@ -1,7 +1,7 @@
 package terrain.domain.abstractcase;
 
 public enum Orientation {
-	NORD,
+	NORTH,
 	SUD,
 	EST,
 	WEST;
