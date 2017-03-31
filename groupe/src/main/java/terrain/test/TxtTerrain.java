@@ -39,9 +39,9 @@ public class TxtTerrain {
     	
     	Integer ligne,colonne;
     	
-    	String toread;
+    	String toRead;
 
-		String[] listtoread;
+		String[] listToRead;
 
 		String[] location;
 
@@ -59,9 +59,9 @@ public class TxtTerrain {
 
 				flag = 1;
 
-				toread = br.readLine();
+				toRead = br.readLine();
 
-				switch(toread.charAt(0)){
+				switch(toRead.charAt(0)){
 
 					case '#':
 						break;
@@ -69,43 +69,43 @@ public class TxtTerrain {
 					case 'J':
 					case 'j':
 						flag = 0;
-						listtoread = toread.split(" ");
-						ligne = Integer.parseInt(listtoread[2]);
-						colonne = Integer.parseInt(listtoread[1]);
+						listToRead = toRead.split(" ");
+						ligne = Integer.parseInt(listToRead[2]);
+						colonne = Integer.parseInt(listToRead[1]);
 						terrain = Jardin.getInstance(colonne, ligne);
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toread + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
 						break;
 
 				}
 
 			}while(flag == 1);
 			
-			while((toread = br.readLine()) != null){
+			while((toRead = br.readLine()) != null){
 
-				switch(toread.charAt(0)){
+				switch(toRead.charAt(0)){
 
 					case '#':
 						break;
 
 					case 'C':
 					case 'c':
-						listtoread = toread.split(" ");
-						location = listtoread[1].split("-");
-						terrain.setCase(Integer.parseInt(location[0])-1,Integer.parseInt(location[1])-1,new Chocolat(Integer.parseInt(listtoread[2])));
+						listToRead = toRead.split(" ");
+						location = listToRead[1].split("-");
+						terrain.setCase(Integer.parseInt(location[0])-1,Integer.parseInt(location[1])-1,new Chocolat(Integer.parseInt(listToRead[2])));
 						break;
 
 					case 'R':
 					case 'r':
-						listtoread = toread.split(" ");
-						location = listtoread[1].split("-");
+						listToRead = toRead.split(" ");
+						location = listToRead[1].split("-");
 						terrain.setCase(Integer.parseInt(location[0])-1,Integer.parseInt(location[1])-1,new Rocher());
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toread + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
 						break;
 
 				}
@@ -126,7 +126,6 @@ public class TxtTerrain {
     
     public Terrain getTerrain(){
     	
-    	// TODO
     	return terrain;
     }
 }
