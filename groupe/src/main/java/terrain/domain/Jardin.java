@@ -1,6 +1,7 @@
 package terrain.domain;
 
 import terrain.domain.abstractcase.AbstractCase;
+import terrain.domain.abstractcase.CaseVide;
 
 public class Jardin implements Terrain {
 
@@ -13,7 +14,13 @@ public class Jardin implements Terrain {
 	private Jardin(int colonne, int ligne){
 		this.ligne = ligne;
 		this.colonne = colonne;
-		// TODO : generation de la table
+		table = new AbstractCase[ligne][];
+		for(int i=0; i<ligne;i++){
+			table[i] = new AbstractCase[colonne];
+			for(int j=0; j<colonne;j++){
+				table[i][j] = new CaseVide();
+			}
+		}
 	}
 	
 	public static Jardin getInstance(int colonne, int ligne){
