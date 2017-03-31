@@ -1,6 +1,10 @@
 package terrain.test;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import org.apache.log4j.Logger;
 
@@ -55,7 +59,7 @@ public class TxtTerrain {
 
 				flag = 1;
 
-				toread = br.readline();
+				toread = br.readLine();
 
 				switch(toread.charAt(0)){
 
@@ -79,7 +83,7 @@ public class TxtTerrain {
 
 			}while(flag == 1);
 			
-			while((toread = br.readline()) != null){
+			while((toread = br.readLine()) != null){
 
 				switch(toread.charAt(0)){
 
@@ -118,7 +122,7 @@ public class TxtTerrain {
 		}
 
 	}
-    }
+    
     
     public Terrain getTerrain(){
     	
