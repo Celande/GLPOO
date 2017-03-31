@@ -40,6 +40,10 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("doBefore Fin");
 	}
 
+	/**
+	 * On vérifie que l'objet terrain de terre est bien un singleton
+	 * PARAM : terrainUsed
+	 */
 	@Test 
 	public void testJardinSingletonAvecMemeLignesEtColonnes(){
 		LOGGER.debug("testJardinSingletonAvecMemeLignesEtColonnes... Debut");
@@ -57,9 +61,14 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testJardinSingletonAvecMemeLignesEtColonnes... Fin");
 	}
 
+	/**
+	 * On vérifie que l'objet terrain de terre est bien un singleton 
+	 * malgré le nombre de lignes et colonnes différentes
+	 * PARAM : terrainUsed
+	 */
 	@Test 
-	public void testJardinSingletonAvecDifferentsLignesEtColonnes(){
-		LOGGER.debug("testJardinSingletonAvecDifferentsLignesEtColonnes... Debut");
+	public void testJardinSingletonAvecDifferentesLignesEtColonnes(){
+		LOGGER.debug("testJardinSingletonAvecDifferentesLignesEtColonnes... Debut");
 
 		// Arrange
 		Jardin terrainUsed = (Jardin)terre.getTerrain();
@@ -71,9 +80,13 @@ public class AbstractTxtTerrainTest {
 		// Assert
 		assertTrue(test);
 
-		LOGGER.debug("testJardinSingletonAvecDifferentsLignesEtColonnes... Fin");
+		LOGGER.debug("testJardinSingletonAvecDifferentesLignesEtColonnes... Fin");
 	}
 
+	/**
+	 * On vérifie que le nombre de lignes est bien 5
+	 * PARAM : nombreLigneAttendu
+	 */
 	@Test
 	public void testNombreLignesCinq(){
 		LOGGER.debug("testNombreLignesCinq... Debut");
@@ -92,6 +105,10 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testNombreLignesCinq... Fin");
 	}
 
+	/**
+	 * On vérifie que le nombre de colonnes est de 6
+	 * PARAM : nombreColonneAttendu
+	 */
 	@Test
 	public void testNombreColonnesSix(){ 
 		LOGGER.debug("testNombreColonnesSix... Debut");
@@ -116,6 +133,10 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testNombreColonnesSix... Fin");
 	}
 
+	/**
+	 * On vérifie qu'il y a au moins un enfant sur le terrain
+	 * Sinon il n'y a pas de jeu
+	 */
 	@Test
 	public void testAuMoinsUnEnfant(){
 		LOGGER.debug("testAuMoinsUnEnfant... Debut");
@@ -125,21 +146,6 @@ public class AbstractTxtTerrainTest {
 
 		/* Parcours du tableau */
 		
-		/*
-		Iterable<AbstractCase[]> iterableLigne = Arrays.asList(terre.getTerrain().getTable());
-		Iterable<AbstractCase> iterableColonne;
-		for(AbstractCase[] ligneCase : iterableLigne)
-		{
-			iterableColonne = Arrays.asList(ligneCase);
-			for(AbstractCase colonneCase : iterableColonne)
-			{
-				if(colonneCase instanceof Enfant)
-				{
-					nbEnfant++;
-				}
-			}
-		}
-		*/
 		AbstractCase[][] table = terre.getTerrain().getTable();
 		
 		for(int i=0; i<table.length; i++)
@@ -157,6 +163,10 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testAuMoinsUnEnfant... Fin");
 	}
 
+	/**
+	 * On vérifie qu'il y a au moins un chocolat sur le terrain
+	 * Sinon il n'y a pas de jeu
+	 */
 	@Test
 	public void testAuMoinsUnChocolat(){
 		LOGGER.debug("testAuMoinsUnChocolat... Debut");
@@ -166,21 +176,7 @@ public class AbstractTxtTerrainTest {
 
 		/* Parcours du tableau */
 		AbstractCase[][] table = terre.getTerrain().getTable();
-		/*
-		Iterable<AbstractCase[]> iterableLigne = Arrays.asList(terre.getTerrain().getTable());
-		Iterable<AbstractCase> iterableColonne;
-		for(AbstractCase[] ligneCase : iterableLigne)
-		{
-			iterableColonne = Arrays.asList(ligneCase);
-			for(AbstractCase colonneCase : iterableColonne)
-			{
-				if(colonneCase instanceof Chocolat)
-				{
-					nbChoco += ((Chocolat)colonneCase).getNombre();
-				}
-			}
-		}*/
-		
+				
 		for(int i=0; i<table.length; i++)
 		{
 			for(int j=0; j<table[i].length; j++)
@@ -196,6 +192,10 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testAuMoinsUnChocolat... Fin");
 	}
 
+	/**
+	 * On vérifie que l'enfant arrive à la bonne case
+	 * PARAM : colonneAttendu, ligneAttendu
+	 */
 	@Test
 	public void testParcoursEnfant(){
 		LOGGER.debug("testParcoursEnfant... Debut");
@@ -214,7 +214,12 @@ public class AbstractTxtTerrainTest {
 		assertTrue(abstractCase instanceof Enfant);
 		LOGGER.debug("testParcoursEnfant... Fin");
 	}
-
+	
+	/**
+	 * On vérifie ce qu'il se passe lorsque l'enfant tente de sortir du terrrain
+	 * Il ne devrait pas pouvoir 
+	 * Son tour est passé vu qu'il a épuisé une aciton
+	 */
 	@Test
 	public void testParcoursEnfantHorsTerrain(){
 		LOGGER.debug("testParcoursEnfantHorsTerrain... Debut");
@@ -243,11 +248,14 @@ public class AbstractTxtTerrainTest {
 		AbstractCase abstractCase = terrain.getCase(colonneAttendu, ligneAttendu);
 
 		// Assert
-		assertTrue(abstractCase instanceof Enfant && ((Enfant)abstractCase).getNom().equals(paul.getNom()));
+		assertTrue(abstractCase instanceof Enfant && ((Enfant)abstractCase).equals(paul));
 		
 		LOGGER.debug("testParcoursEnfantHorsTerrain... Fin");
 	}
 
+	/**
+	 * Un objet ne devrait pas pouvoir ête ajouté hors du terrain
+	 */
 	@Test (expected = UnsupportedOperationException.class)
 	public void testAjoutObjetHorsTerrain(){
 
@@ -289,6 +297,9 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testAjoutObjetSurAutreObjet... Fin");
 	}
 
+	/**
+	 * On peut ajouter n'importe quel objet sur une case vide
+	 */
 	@Test
 	public void testAjoutObjetsurVide(){
 		
