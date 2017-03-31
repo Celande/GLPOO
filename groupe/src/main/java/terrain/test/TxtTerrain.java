@@ -23,7 +23,6 @@ public class TxtTerrain {
     	
     	loadTerrain();
     }
-    
     private void loadTerrain(){
     	// TODO
     }
@@ -31,6 +30,6 @@ public class TxtTerrain {
     public Terrain getTerrain(){
     	
     	// TODO
-    	return null;
+    	return terrain;
     }
 }
