@@ -5,8 +5,8 @@ import terrain.domain.abstractcase.CaseVide;
 
 public class Jardin implements Terrain {
 
-	private static int ligne;
-	private static int colonne;
+	private int ligne;
+	private int colonne;
 	private AbstractCase[][] table;
 	
 	private static Jardin instance = null;
@@ -31,28 +31,28 @@ public class Jardin implements Terrain {
 	}
 
 	public AbstractCase[][] getTable() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return table;
 	}
 
 	public AbstractCase getCase(int colonne, int ligne) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return table[ligne][colonne];
 	}
 
 	public void setCase(int colonne, int ligne, AbstractCase abstractCase) {
-		// TODO Auto-generated method stub
-		
+
+		table[ligne][colonne] = abstractCase;
 	}
 
 	public Integer getLigne() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return ligne;
 	}
 
 	public Integer getColonne() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return colonne;
 	}
 
 	public void bougerEnfants() {

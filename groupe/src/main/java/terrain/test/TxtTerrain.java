@@ -26,7 +26,7 @@ public class TxtTerrain {
     	
     	loadTerrain();
     }
-    
+
     /**
      * Chargement du terrain depuis fichier
      */
@@ -123,6 +123,6 @@ public class TxtTerrain {
     public Terrain getTerrain(){
     	
     	// TODO
-    	return null;
+    	return terrain;
     }
 }
