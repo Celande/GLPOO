@@ -1,6 +1,0 @@
-(clone) 
--> branche (commit), sélectionner master 
--> pull (arranger pour qu'il n'y est aucun conflit -> commit)
--> merge 
--> pull (vérifier que tout est pareil)
--> push
