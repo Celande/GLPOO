@@ -47,9 +47,22 @@ public class Jardin implements Terrain {
 		return table[ligne][colonne];
 	}
 
-	public void setCase(int colonne, int ligne, AbstractCase abstractCase) {
+	public void setCase(int colonne, int ligne, AbstractCase abstractCase) throws UnsupportedOperationException {
 
-		table[ligne][colonne] = abstractCase;
+		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
+			throw new UnsupportedOperationException("La ligne ou la colonne est hors du tableau.");
+		
+		if(abstractCase == null)
+			throw new UnsupportedOperationException("L'objet à ajouter est nul.");
+		
+		if(table[ligne][colonne] instanceof CaseVide)
+			table[ligne][colonne] = abstractCase;
+		else if(table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide)
+			table[ligne][colonne] = abstractCase;
+		else{
+			LOGGER.debug("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
+			throw new UnsupportedOperationException("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
+		}
 	}
 
 	public Integer getLigne() {
