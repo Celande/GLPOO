@@ -32,7 +32,7 @@ public class TxtTerrain {
     }
 
     /**
-     * Chargement du terrain depuis fichier
+     * Chargement du terrain depuis le fichier
      */
     
     private void loadTerrain(){
