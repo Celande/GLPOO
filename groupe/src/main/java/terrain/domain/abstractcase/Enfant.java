@@ -1,5 +1,6 @@
 package terrain.domain.abstractcase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Enfant extends AbstractCase {
@@ -8,18 +9,30 @@ public class Enfant extends AbstractCase {
 	private Orientation  orientation;
 	private List<Deplacement> deplacements;
 	
-	public Enfant(Orientation orientation, List<Deplacement> deplacements, String string) {
-		// TODO Auto-generated constructor stub
+	public Enfant(Orientation orientation, List<Deplacement> deplacements, String nom) {
+		this.orientation = orientation;
+		this.nom = nom;
+		this.deplacements = deplacements;
+	}
+	
+	public Enfant(Orientation orientation, String deplacements, String nom){
+		this.orientation = orientation;
+		this.nom = nom;
+		
+		this.deplacements = new ArrayList<Deplacement>();
+		for(char c : deplacements.toCharArray()){
+			this.deplacements.add(Deplacement.deLettreADeplacement(c));
+		}
 	}
 
 	public String getNom(){
 		
-		return nom;
+		return this.nom;
 	}
 	
 	public Orientation getOrientation(){
 		
-		return orientation;
+		return this.orientation;
 	}
 	
 	public void setOrientation(Orientation orientation){
@@ -29,7 +42,7 @@ public class Enfant extends AbstractCase {
 	
 	public List<Deplacement> getDeplacements(){
 		
-		return deplacements;
+		return this.deplacements;
 	}
 	
 	public boolean equals(Enfant enfant){
