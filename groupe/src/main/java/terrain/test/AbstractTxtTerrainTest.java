@@ -229,16 +229,8 @@ public class AbstractTxtTerrainTest {
 
 		final int colonne = 2;
 		final int ligne = 2;
-		final Orientation orientation = SUD;
-		final List<Deplacement> deplacements = new ArrayList<Deplacement>();
-		deplacements.add(AVANT);
-		deplacements.add(AVANT);
-		deplacements.add(AVANT);
-		deplacements.add(AVANT);
-		deplacements.add(AVANT);
-		deplacements.add(AVANT);
 
-		final Enfant paul = new Enfant(orientation, deplacements, "Paul");
+		final Enfant paul = new Enfant(SUD, "AAAAAAA", "Paul");
 
 		// Act
 		final Terrain terrain = terre.getTerrain();
@@ -340,5 +332,11 @@ public class AbstractTxtTerrainTest {
 		assertTrue(abstractCase instanceof Rocher);
 		
 		LOGGER.debug("testAjoutObjetsurVide... Fin");
+	}
+	
+	@Test (expected = UnsupportedOperationException.class)
+	public void testDeplacementInexistant(){
+		
+		new Enfant(SUD, "AZA", "Aza");
 	}
 }
