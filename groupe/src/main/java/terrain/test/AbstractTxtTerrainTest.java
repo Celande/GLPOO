@@ -275,8 +275,10 @@ public class AbstractTxtTerrainTest {
 
 
 	/**
-	 * L'ajout d'un objet sur un autre objet ne peut se faire que du vide sur un enfant
-	 * et lors de la fonction bougerEnfants
+	 * L'ajout d'un objet sur un autre objet ne peut se faire que 
+	 * - du vide sur un enfant (pour marquer le déplacement)
+	 * - un objet sur du vide
+	 * et lors de la fonction bougerEnfants et de 
 	 * jamais autrement
 	 */
 	@Test (expected = UnsupportedOperationException.class)
@@ -296,6 +298,25 @@ public class AbstractTxtTerrainTest {
 		
 		LOGGER.debug("testAjoutObjetSurAutreObjet... Fin");
 	}
+	
+	/**
+	 * On vérifie qu'on ne peut pas ajouter d'objet nul au tableau
+	 */
+	@Test (expected = UnsupportedOperationException.class)
+	public void testAjoutObjetNul(){
+		
+		LOGGER.debug("testAjoutObjetNul... Debut");
+		
+		// Arrange
+		final Terrain terrain = terre.getTerrain();
+		final int colonne = terrain.getColonne()-1;
+		final int ligne = terrain.getLigne()-1;
+		
+		// Act
+		terrain.setCase(colonne, ligne, null); // Cette case devrait être vide.
+		
+		LOGGER.debug("testAjoutObjetNul... Fin");
+	}
 
 	/**
 	 * On peut ajouter n'importe quel objet sur une case vide
@@ -307,8 +328,8 @@ public class AbstractTxtTerrainTest {
 
 		// Arrange
 		final Terrain terrain = terre.getTerrain();
-		final int colonne = terrain.getColonne();
-		final int ligne = terrain.getLigne();
+		final int colonne = terrain.getColonne()-1;
+		final int ligne = terrain.getLigne()-1;
 		final Rocher roc = new Rocher();
 
 		// Act
