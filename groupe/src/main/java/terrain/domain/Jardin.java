@@ -39,14 +39,20 @@ public class Jardin implements Terrain {
 
 	public AbstractCase[][] getTable() {
 
-		return table;
+		return this.table;
 	}
-
+	
+	/**
+	 * Indices considérés comme étant de 0 à ligne ou colonne - 1
+	 */
 	public AbstractCase getCase(int colonne, int ligne) {
 
-		return table[ligne][colonne];
+		return this.table[ligne][colonne];
 	}
 
+	/**
+	 * Indices considérés comme étant de 0 à ligne ou colonne - 1
+	 */
 	public void setCase(int colonne, int ligne, AbstractCase abstractCase) throws UnsupportedOperationException {
 
 		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
@@ -55,10 +61,10 @@ public class Jardin implements Terrain {
 		if(abstractCase == null)
 			throw new UnsupportedOperationException("L'objet à ajouter est nul.");
 		
-		if(table[ligne][colonne] instanceof CaseVide)
-			table[ligne][colonne] = abstractCase;
-		else if(table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide)
-			table[ligne][colonne] = abstractCase;
+		if(this.table[ligne][colonne] instanceof CaseVide)
+			this.table[ligne][colonne] = abstractCase;
+		else if(this.table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide)
+			this.table[ligne][colonne] = abstractCase;
 		else{
 			LOGGER.debug("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
 			throw new UnsupportedOperationException("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
@@ -67,12 +73,12 @@ public class Jardin implements Terrain {
 
 	public Integer getLigne() {
 
-		return ligne;
+		return this.ligne;
 	}
 
 	public Integer getColonne() {
 
-		return colonne;
+		return this.colonne;
 	}
 
 	public void bougerEnfants() {
@@ -112,7 +118,7 @@ public class Jardin implements Terrain {
 
 					else if(this.table[i][j] instanceof Enfant){
 						if(tableCopie[i][j] instanceof Enfant){
-							if(!((Enfant)table[i][j]).equals((Enfant)tableCopie[i][j]))
+							if(!((Enfant)this.table[i][j]).equals((Enfant)tableCopie[i][j]))
 								return false;
 						}
 						else
