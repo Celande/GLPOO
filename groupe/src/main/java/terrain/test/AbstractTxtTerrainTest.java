@@ -230,6 +230,8 @@ public class AbstractTxtTerrainTest {
 		final int colonne = 2;
 		final int ligne = 2;
 
+		// TODO : voir s'il est possible d'ajouter directement une liste en paramètre :
+		// new ArrayList<Deplacement>(){AVANT, AVANT, AVANT, AVANT, AVANT, AVANT, AVANT}
 		final Enfant paul = new Enfant(SUD, "AAAAAAA", "Paul");
 
 		// Act
