@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import junit.framework.Assert;
 import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.AbstractCase;
@@ -131,6 +132,27 @@ public class AbstractTxtTerrainTest {
 		assertTrue(colonne);			
 
 		LOGGER.debug("testNombreColonnesSix... Fin");
+	}
+	
+	@Test
+	void testNombreChocolats(){
+		
+		LOGGER.debug("testNombreChocolats... Debut");
+		
+		// TODO : changer les valeurs pour qu'elles correspondent à là où on devrait trouver du choco
+		
+		// Arrange
+		final int nbChocolatsAttendu = 0;
+		
+		// Act
+		final int ligne = 0;
+		final int colonne = 0;
+		final int nbChocolats = ((Chocolat)terre.getTerrain().getCase(colonne, ligne)).getNombre();
+		
+		// Assert
+		assertEquals(nbChocolatsAttendu, nbChocolats);
+		
+		LOGGER.debug("testNombreChocolats... Fin");
 	}
 
 	/**
