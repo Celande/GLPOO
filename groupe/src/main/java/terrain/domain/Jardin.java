@@ -43,18 +43,23 @@ public class Jardin implements Terrain {
 	}
 	
 	/**
-	 * Indices considérés comme étant de 0 à ligne ou colonne - 1
+	 * Indices considérés comme étant de 1 à ligne ou colonne
 	 */
 	public AbstractCase getCase(int colonne, int ligne) {
 
+		ligne--;
+		colonne--;
 		return this.table[ligne][colonne];
 	}
 
 	/**
-	 * Indices considérés comme étant de 0 à ligne ou colonne - 1
+	 * Indices considérés comme étant de 1 à ligne ou colonne
 	 */
 	public void setCase(int colonne, int ligne, AbstractCase abstractCase) throws UnsupportedOperationException {
 
+		ligne--;
+		colonne--;
+		
 		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
 			throw new UnsupportedOperationException("La ligne ou la colonne est hors du tableau.");
 		

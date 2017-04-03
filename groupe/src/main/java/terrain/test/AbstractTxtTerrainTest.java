@@ -318,8 +318,8 @@ public class AbstractTxtTerrainTest {
 		
 		// Arrange
 		final Terrain terrain = terre.getTerrain();
-		final int colonne = terrain.getColonne()-1;
-		final int ligne = terrain.getLigne()-1;
+		final int colonne = terrain.getColonne();
+		final int ligne = terrain.getLigne();
 		
 		// Act
 		terrain.setCase(colonne, ligne, null); // Cette case devrait être vide.
@@ -337,8 +337,8 @@ public class AbstractTxtTerrainTest {
 
 		// Arrange
 		final Terrain terrain = terre.getTerrain();
-		final int colonne = terrain.getColonne()-1;
-		final int ligne = terrain.getLigne()-1;
+		final int colonne = terrain.getColonne();
+		final int ligne = terrain.getLigne();
 		final Rocher roc = new Rocher();
 
 		// Act
