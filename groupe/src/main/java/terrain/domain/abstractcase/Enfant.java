@@ -52,14 +52,8 @@ public class Enfant extends AbstractCase {
 		if(this.orientation != enfant.getOrientation())
 			return false;
 		
-		// TODO
-		// Vérifier si le equals de List ne fait pas déjà ça
-		// Voir si moyen d'implémenter un iterator
-		List<Deplacement> deplacementsCopie = enfant.getDeplacements();
-		for(int i=0; i<deplacements.size(); i++){
-			if(deplacements.get(i) != deplacementsCopie.get(i))
-				return false;
-		}
+		if(!this.deplacements.equals(enfant.getDeplacements()))
+			return false;
 		
 		return true;
 	}
