@@ -1,26 +1,19 @@
 package terrain.test;
 
 import static org.junit.Assert.*;
-import static terrain.domain.abstractcase.Deplacement.AVANT;
 import static terrain.domain.abstractcase.Orientation.SUD;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.Assert;
 import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.Deplacement;
 import terrain.domain.abstractcase.Enfant;
-import terrain.domain.abstractcase.Orientation;
 import terrain.domain.abstractcase.Rocher;
 
 public class AbstractTxtTerrainTest {
