@@ -19,11 +19,15 @@ public class Jardin implements Terrain {
 	private static Jardin instance = null;
 
 	private Jardin(int colonne, int ligne){
+		// Initialisation des lignes et colonnes
 		this.ligne = ligne;
 		this.colonne = colonne;
+		
+		// Initialisation du tableau avec toutes les cases vides
 		table = new AbstractCase[ligne][];
 		for(int i=0; i<ligne;i++){
 			table[i] = new AbstractCase[colonne];
+			
 			for(int j=0; j<colonne;j++){
 				table[i][j] = new CaseVide();
 			}
@@ -60,16 +64,21 @@ public class Jardin implements Terrain {
 		ligne--;
 		colonne--;
 		
+		// L'objet doit être ajoutée dans le tableau
 		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
 			throw new UnsupportedOperationException("La ligne ou la colonne est hors du tableau.");
 		
+		// On ne peut pas ajouter un objet nul
 		if(abstractCase == null)
 			throw new UnsupportedOperationException("L'objet à ajouter est nul.");
 		
+		// Ajout à un emplacement vide
 		if(this.table[ligne][colonne] instanceof CaseVide)
 			this.table[ligne][colonne] = abstractCase;
+		// Remplace un enfant par une case vide dans le cadre d'un déplacment
 		else if(this.table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide)
 			this.table[ligne][colonne] = abstractCase;
+		
 		else{
 			LOGGER.debug("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
 			throw new UnsupportedOperationException("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
@@ -94,26 +103,34 @@ public class Jardin implements Terrain {
 	public boolean equals(Terrain terrain) {
 		try{ // Au cas où une des valeurs seraient nulle
 
+			// Doit être un Jardin
 			if(terrain instanceof Jardin == false)
 				return false;
-
+			
+			// Doit avoir le même nombre de lignes
 			if(this.ligne != terrain.getLigne())
 				return false;
 
+			// Doit avoir le même nombre de colonnes
 			if(this.colonne != terrain.getColonne())
 				return false;
 
+			// On doit retrouver à chaque case du tableau
 			AbstractCase[][] tableCopie = terrain.getTable();
 			for(int i=0; i<this.ligne; i++){
 				for(int j=0; j<this.colonne; j++){
+					// Une case vide
 					if(this.table[i][j] instanceof CaseVide && (tableCopie[i][j] instanceof CaseVide == false))
 						return false;
 
+					// Un rocher
 					else if(this.table[i][j] instanceof Rocher && (tableCopie[i][j] instanceof Rocher == false))
 						return false;
 
 					else if(this.table[i][j] instanceof Chocolat){
+						// Un chocolat
 						if(tableCopie[i][j] instanceof Chocolat){
+							// Avec le même nombre
 							if(((Chocolat)table[i][j]).getNombre() != ((Chocolat)tableCopie[i][j]).getNombre())
 								return false;
 						}
@@ -122,7 +139,9 @@ public class Jardin implements Terrain {
 					}
 
 					else if(this.table[i][j] instanceof Enfant){
+						// Un enfant
 						if(tableCopie[i][j] instanceof Enfant){
+							// Identique
 							if(!((Enfant)this.table[i][j]).equals((Enfant)tableCopie[i][j]))
 								return false;
 						}
