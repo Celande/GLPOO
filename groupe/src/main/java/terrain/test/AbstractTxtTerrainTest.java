@@ -1,9 +1,11 @@
 package terrain.test;
 
 import static org.junit.Assert.*;
+import static terrain.domain.abstractcase.Deplacement.AVANT;
 import static terrain.domain.abstractcase.Orientation.SUD;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -13,6 +15,7 @@ import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.Chocolat;
+import terrain.domain.abstractcase.Deplacement;
 import terrain.domain.abstractcase.Enfant;
 import terrain.domain.abstractcase.Rocher;
 
@@ -244,10 +247,16 @@ public class AbstractTxtTerrainTest {
 
 		final int colonne = 2;
 		final int ligne = 2;
-
-		// TODO : voir s'il est possible d'ajouter directement une liste en paramètre :
-		// new ArrayList<Deplacement>(){AVANT, AVANT, AVANT, AVANT, AVANT, AVANT, AVANT}
-		final Enfant paul = new Enfant(SUD, "AAAAAAA", "Paul");
+		
+		final Enfant paul = new Enfant(SUD, 
+				new ArrayList<Deplacement>(Arrays.asList(
+						AVANT, 
+						AVANT, 
+						AVANT, 
+						AVANT, 
+						AVANT, 
+						AVANT, 
+						AVANT)), "Paul");
 
 		// Act
 		final Terrain terrain = terre.getTerrain();
