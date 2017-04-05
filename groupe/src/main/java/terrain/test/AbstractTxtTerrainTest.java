@@ -135,14 +135,12 @@ public class AbstractTxtTerrainTest {
 		
 		LOGGER.debug("testNombreChocolats... Debut");
 		
-		// TODO : changer les valeurs pour qu'elles correspondent à là où on devrait trouver du choco
-		
 		// Arrange
-		final int nbChocolatsAttendu = 0;
+		final int nbChocolatsAttendu = 3;
 		
 		// Act
-		final int ligne = 0;
-		final int colonne = 0;
+		final int ligne = 4;
+		final int colonne = 1;
 		final int nbChocolats = ((Chocolat)terre.getTerrain().getCase(colonne, ligne)).getNombre();
 		
 		// Assert
