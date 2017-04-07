@@ -35,7 +35,7 @@ public class terrainGUI extends JFrame{
 		//ZModel model = new ZModel(data);
 		//this.terrain = new JTable(model);
 		//this.getContentPane().add(terrain, BorderLayout.CENTER);
-		this.setContentPane(new JLabel(new ImageIcon("D:\\Java\\git\\GLPOO\\groupe\\src\\main\\resources\\background.jpg")));
+		this.setContentPane(new JLabel(new ImageIcon("./src/main/resources/background.jpg")));
 	//	terrain.setDefaultRenderer(CustomCellRenderer.class, new CustomCellRenderer());
 	}
 	/*class ZModel extends AbstractTableModel{
