@@ -21,11 +21,12 @@ import terrain.domain.abstractcase.Chocolat;
 import terrain.domain.abstractcase.Rocher;
 import terrain.domain.abstractcase.enfant.Enfant;
 
-public class terrainGUI extends JFrame{
+public class TerrainGUI extends JFrame{
 	
 	private JTable terrain;
+	private final static String RESOURCES_PATH = "src/main/resources/";
 	
-	public terrainGUI(){
+	public TerrainGUI(){
 		
 		this.setTitle("Chasse aux oeufs");
 		this.setSize(1200, 800);
@@ -35,7 +36,7 @@ public class terrainGUI extends JFrame{
 		//ZModel model = new ZModel(data);
 		//this.terrain = new JTable(model);
 		//this.getContentPane().add(terrain, BorderLayout.CENTER);
-		this.setContentPane(new JLabel(new ImageIcon("./src/main/resources/background.jpg")));
+		this.setContentPane(new JLabel(new ImageIcon(RESOURCES_PATH + "background.jpg")));
 	//	terrain.setDefaultRenderer(CustomCellRenderer.class, new CustomCellRenderer());
 	}
 	/*class ZModel extends AbstractTableModel{
@@ -75,9 +76,5 @@ public class terrainGUI extends JFrame{
 	        }
 	        return l;
 	    }
-	}*/
-	public static void main(String[] args){
-		    terrainGUI terrainGUI = new terrainGUI();
-		    terrainGUI.setVisible(true);
-	}       
+	}*/     
 }
