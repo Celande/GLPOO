@@ -18,8 +18,8 @@ import com.lowagie.text.Image;
 
 import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.Enfant;
 import terrain.domain.abstractcase.Rocher;
+import terrain.domain.abstractcase.enfant.Enfant;
 
 public class terrainGUI extends JFrame{
 	

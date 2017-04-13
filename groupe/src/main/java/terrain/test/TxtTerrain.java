@@ -10,8 +10,7 @@ import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.Chocolat;
 import terrain.domain.abstractcase.Rocher;
-
-import terrain.domain.abstractcase.Enfant;
+import terrain.domain.abstractcase.enfant.Enfant;
 
 public class TxtTerrain {
 	private File fileTerrain;

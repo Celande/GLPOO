@@ -1,8 +1,8 @@
 package terrain.test;
 
 import static org.junit.Assert.*;
-import static terrain.domain.abstractcase.Deplacement.AVANT;
-import static terrain.domain.abstractcase.Orientation.SUD;
+import static terrain.domain.abstractcase.enfant.Deplacement.AVANT;
+import static terrain.domain.abstractcase.enfant.Orientation.SUD;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.Deplacement;
-import terrain.domain.abstractcase.Enfant;
 import terrain.domain.abstractcase.Rocher;
+import terrain.domain.abstractcase.enfant.Deplacement;
+import terrain.domain.abstractcase.enfant.Enfant;
 
 public class AbstractTxtTerrainTest {
 	private static final Logger LOGGER = Logger.getLogger(AbstractTxtTerrainTest.class);

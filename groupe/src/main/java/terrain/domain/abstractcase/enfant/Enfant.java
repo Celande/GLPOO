@@ -1,7 +1,9 @@
-package terrain.domain.abstractcase;
+package terrain.domain.abstractcase.enfant;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import terrain.domain.abstractcase.AbstractCase;
 
 public class Enfant extends AbstractCase {
 	

@@ -5,8 +5,8 @@ import org.apache.log4j.Logger;
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.Enfant;
 import terrain.domain.abstractcase.Rocher;
+import terrain.domain.abstractcase.enfant.Enfant;
 
 public class Jardin implements Terrain {
 
