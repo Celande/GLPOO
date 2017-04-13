@@ -19,3 +19,7 @@ public class TxtTerrainTest extends AbstractTxtTerrainTest {
         
     }
 }
+
+public static void main(String[] args){
+	TxtTerrainTest tests = new TxtTerrainTest();
+}
