@@ -18,8 +18,9 @@ public class TxtTerrainTest extends AbstractTxtTerrainTest {
         TxtTerrain.init(new File(RESOURCES_PATH + TERRAIN_FILE_NAME),new File(RESOURCES_PATH + ENFANT_FILE_NAME));
         
     }
-}
 
 public static void main(String[] args){
 	TxtTerrainTest tests = new TxtTerrainTest();
+}
+
 }
