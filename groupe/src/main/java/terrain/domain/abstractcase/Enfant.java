@@ -15,8 +15,8 @@ public class Enfant extends AbstractCase {
 		this.deplacements = deplacements;
 	}
 	
-	public Enfant(Orientation orientation, String deplacements, String nom){
-		this.orientation = orientation;
+	public Enfant(char orientation, String deplacements, String nom){
+		this.orientation = Orientation.deLettreAOrientation(orientation);
 		this.nom = nom;
 		
 		this.deplacements = new ArrayList<Deplacement>();
