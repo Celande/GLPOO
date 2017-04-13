@@ -20,8 +20,8 @@ import terrain.domain.abstractcase.Enfant;
 import terrain.domain.abstractcase.Orientation;
 
 public class TxtTerrain {
-	private File file_terrain;
-	private File file_enfants;
+	private File fileTerrain;
+	private File fileEnfants;
     private Terrain terrain;
     
     private static final Logger LOGGER = Logger.getLogger(TxtTerrain.class);
@@ -31,10 +31,10 @@ public class TxtTerrain {
      * 
      * @param file
      */
-    public void init(File file_terrain, File file_enfants){
+    public void init(File fileTerrain, File fileEnfants){
     	LOGGER.debug("init");
-    	this.file_terrain = file_terrain;
-    	this.file_enfants = file_enfants;
+    	this.fileTerrain = fileTerrain;
+    	this.fileEnfants = fileEnfants;
     	
     	loadTerrain();
     	loadEnfants();
@@ -46,11 +46,13 @@ public class TxtTerrain {
     
     private void loadTerrain(){
     	
-    	Integer ligne,colonne;
+    	Integer ligne
     	
-    	String toread;
+    	Integer colonne;
+    	
+    	String toRead;
 
-		String[] listtoread;
+		String[] listToRead;
 
 		String[] location;
 
@@ -58,7 +60,7 @@ public class TxtTerrain {
 
 		try{
 
-			FileInputStream ips = new FileInputStream(file_terrain); 
+			FileInputStream ips = new FileInputStream(fileTerrain); 
 			
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			
@@ -68,9 +70,9 @@ public class TxtTerrain {
 
 				flag = 1;
 
-				toread = br.readLine();
+				toRead = br.readLine();
 
-				switch(toread.charAt(0)){
+				switch(toRead.charAt(0)){
 
 					case '#':
 						break;
@@ -78,43 +80,43 @@ public class TxtTerrain {
 					case 'J':
 					case 'j':
 						flag = 0;
-						listtoread = toread.split(" ");
-						ligne = Integer.parseInt(listtoread[2]);
-						colonne = Integer.parseInt(listtoread[1]);
+						listToRead = toRead.split(" ");
+						ligne = Integer.parseInt(listToRead[2]);
+						colonne = Integer.parseInt(listToRead[1]);
 						terrain = Jardin.getInstance(colonne, ligne);
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toread + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
 						break;
 
 				}
 
 			}while(flag == 1);
 			
-			while((toread = br.readLine()) != null){
+			while((toRead = br.readLine()) != null){
 
-				switch(toread.charAt(0)){
+				switch(toRead.charAt(0)){
 
 					case '#':
 						break;
 
 					case 'C':
 					case 'c':
-						listtoread = toread.split(" ");
-						location = listtoread[1].split("-");
-						terrain.setCase(Integer.parseInt(location[0])-1,Integer.parseInt(location[1])-1,new Chocolat(Integer.parseInt(listtoread[2])));
+						listToRead = toRead.split(" ");
+						location = listToRead[1].split("-");
+						terrain.setCase(Integer.parseInt(location[0])-1,Integer.parseInt(location[1])-1,new Chocolat(Integer.parseInt(listToRead[2])));
 						break;
 
 					case 'R':
 					case 'r':
-						listtoread = toread.split(" ");
-						location = listtoread[1].split("-");
+						listToRead = toRead.split(" ");
+						location = listToRead[1].split("-");
 						terrain.setCase(Integer.parseInt(location[0])-1,Integer.parseInt(location[1])-1,new Rocher());
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toread + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
 						break;
 
 				}
@@ -135,21 +137,21 @@ public class TxtTerrain {
     	
     	try{
 
-			FileInputStream ips = new FileInputStream(file_enfants); 
+			FileInputStream ips = new FileInputStream(fileEnfants); 
 			
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			
 			BufferedReader br = new BufferedReader(ipsr);
 			
-			String toread;
+			String toRead;
 			
-			String[] listtoread;
+			String[] listToRead;
 
 			String[] location;
 
-			while((toread = br.readLine()) != null){
+			while((toRead = br.readLine()) != null){
 
-				switch(toread.charAt(0)){
+				switch(toRead.charAt(0)){
 
 					case '#':
 						break;
@@ -157,44 +159,14 @@ public class TxtTerrain {
 					case 'E':
 					case 'e':
 						Orientation orientation = null;
-						listtoread = toread.split(" ");
-						location = listtoread[1].split("-");
-						switch(listtoread[2].charAt(0)){
-							default:
-								orientation = Orientation.NORD;
-								break;
-							case 'E':
-								orientation = Orientation.EST;
-								break;
-							case 'S':
-								orientation = Orientation.SUD;
-								break;
-							case 'W':
-								orientation = Orientation.OUEST;
-								break;
-						}
-						List<Deplacement> deplacements = new ArrayList<Deplacement>();
-						for(int i=0; i<listtoread[3].length(); i++){
-							switch(listtoread[3].charAt(i)){
-								default:
-									deplacements.add(Deplacement.AVANT);
-									break;
-								case 'D':
-								case 'd':
-									deplacements.add(Deplacement.DROITE);
-									break;
-								case 'G':
-								case 'g':
-									deplacements.add(Deplacement.GAUCHE);
-									break;
-							}
-
-						}
-						terrain.setCase(Integer.parseInt(location[0])-1, Integer.parseInt(location[1])-1, new Enfant(orientation,deplacements,listtoread[4]));
+						listToRead = toRead.split(" ");
+						location = listToRead[1].split("-");
+						orientation = Orientation.deLettreAOrientation(listToRead[2].charAt(0));
+						terrain.setCase(Integer.parseInt(location[0])-1, Integer.parseInt(location[1])-1, new Enfant(orientation,listToRead[3],listToRead[4]));
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toread + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
 						break;
 
 				}
