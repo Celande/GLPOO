@@ -24,6 +24,7 @@ public class AbstractTxtTerrainTest {
 
 	private final static String RESOURCES_PATH = "src/test/resources/";
 	private final static String TERRAIN_FILE_NAME = "terrain-01.txt";
+	private final static String ENFANT_FILE_NAME = "enfant-01.txt";
 
 	protected TxtTerrain terre;
 
@@ -31,8 +32,9 @@ public class AbstractTxtTerrainTest {
 	public void doBefore() {
 		LOGGER.debug("doBefore Debut");
 
-		final File file = new File(RESOURCES_PATH + TERRAIN_FILE_NAME);
-		terre.init(file);
+		final File fileTerrain = new File(RESOURCES_PATH + TERRAIN_FILE_NAME);
+		final File fileEnfant = new File(RESOURCES_PATH + ENFANT_FILE_NAME);
+		terre.init(fileTerrain, fileEnfant);
 
 		LOGGER.debug("doBefore Fin");
 	}
@@ -360,7 +362,10 @@ public class AbstractTxtTerrainTest {
 	
 	@Test (expected = UnsupportedOperationException.class)
 	public void testDeplacementInexistant(){
+		LOGGER.debug("testDeplacementInexistant... Debut");
 		
-		new Enfant(SUD, "AZA", "Aza");
+		new Enfant('s', "AZA", "Aza");
+		
+		LOGGER.debug("testDeplacementInexistant... Fin");
 	}
 }

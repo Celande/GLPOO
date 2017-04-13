@@ -1,7 +1,5 @@
 package terrain.domain.abstractcase;
 
-import org.apache.log4j.Logger;
-
 public enum Deplacement {
 	AVANT,
 	GAUCHE,

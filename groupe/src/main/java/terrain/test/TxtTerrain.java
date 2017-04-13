@@ -3,9 +3,7 @@ package terrain.test;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 import org.apache.log4j.Logger;
 
 import terrain.domain.Jardin;
@@ -13,11 +11,7 @@ import terrain.domain.Terrain;
 import terrain.domain.abstractcase.Chocolat;
 import terrain.domain.abstractcase.Rocher;
 
-import java.util.ArrayList;
-
-import terrain.domain.abstractcase.Deplacement;
 import terrain.domain.abstractcase.Enfant;
-import terrain.domain.abstractcase.Orientation;
 
 public class TxtTerrain {
 	private File fileTerrain;
@@ -46,34 +40,24 @@ public class TxtTerrain {
     
     private void loadTerrain(){
     	
-    	Integer ligne
-    	
-    	Integer colonne;
+    	int ligne;    	
+    	int colonne;    
     	
     	String toRead;
-
 		String[] listToRead;
-
 		String[] location;
-
 		Integer flag;
 
 		try{
 
-			FileInputStream ips = new FileInputStream(fileTerrain); 
-			
-			InputStreamReader ipsr = new InputStreamReader(ips);
-			
+			FileInputStream ips = new FileInputStream(fileTerrain); 			
+			InputStreamReader ipsr = new InputStreamReader(ips);			
 			BufferedReader br = new BufferedReader(ipsr);
 			
 			do{
-
 				flag = 1;
-
 				toRead = br.readLine();
-
 				switch(toRead.charAt(0)){
-
 					case '#':
 						break;
 
@@ -87,17 +71,14 @@ public class TxtTerrain {
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a ete ignoree.");
 						break;
-
 				}
 
 			}while(flag == 1);
 			
 			while((toRead = br.readLine()) != null){
-
 				switch(toRead.charAt(0)){
-
 					case '#':
 						break;
 
@@ -116,76 +97,55 @@ public class TxtTerrain {
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a ete ignoree.");
 						break;
-
 				}
-
 			}
 
 			br.close(); 
 		
-		}catch (Exception e){
-		
-			LOGGER.debug(e.toString());
-		
+		}catch (Exception e){		
+			LOGGER.debug(e.toString());		
 		}
 
     }
     
-    private void loadEnfants(){
-    	
+    private void loadEnfants(){    	
     	try{
-
-			FileInputStream ips = new FileInputStream(fileEnfants); 
-			
-			InputStreamReader ipsr = new InputStreamReader(ips);
-			
-			BufferedReader br = new BufferedReader(ipsr);
-			
-			String toRead;
-			
+			FileInputStream ips = new FileInputStream(fileEnfants); 			
+			InputStreamReader ipsr = new InputStreamReader(ips);			
+			BufferedReader br = new BufferedReader(ipsr);			
+			String toRead;			
 			String[] listToRead;
-
 			String[] location;
 
 			while((toRead = br.readLine()) != null){
-
 				switch(toRead.charAt(0)){
-
 					case '#':
 						break;
 
 					case 'E':
 					case 'e':
-						Orientation orientation = null;
 						listToRead = toRead.split(" ");
 						location = listToRead[1].split("-");
-						orientation = Orientation.deLettreAOrientation(listToRead[2].charAt(0));
-						terrain.setCase(Integer.parseInt(location[0])-1, Integer.parseInt(location[1])-1, new Enfant(orientation,listToRead[3],listToRead[4]));
+						terrain.setCase(Integer.parseInt(location[0])-1, Integer.parseInt(location[1])-1, new Enfant(listToRead[2].charAt(0),listToRead[3],listToRead[4]));
 						break;
 
 					default:
-						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a été ignorée.");
+						LOGGER.debug("Attention, la ligne ~ " + toRead + " ~ a ete ignoree.");
 						break;
-
 				}
-
-
 			}
 
 			br.close(); 
 		
-		}catch (Exception e){
-		
-			System.out.println(e.toString());
-		
+		}catch (Exception e){		
+			System.out.println(e.toString());		
 		}
     	
     }
     
-    public Terrain getTerrain(){
-    	
+    public Terrain getTerrain(){    	
     	return terrain;
     }
 }
