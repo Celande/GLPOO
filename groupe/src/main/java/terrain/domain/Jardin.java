@@ -96,8 +96,19 @@ public class Jardin implements Terrain {
 	}
 
 	public void bougerEnfants() {
-		// TODO Auto-generated method stub
-
+		//a finir
+		for (int i = 0; i<getLigne(); i++){
+			for (int j = 0; j<getColonne(); j++){
+				if (table[i][j] instanceof Enfant){
+					int ligneEnfant = i;
+					int coloneEnfant = j;
+					i = getLigne();
+					j = getColonne();
+				}
+			}
+		}
+		
+		
 	}
 
 	public boolean equals(Terrain terrain) {
