@@ -124,43 +124,5 @@ public class TerrainGUI extends JFrame{
 				// TODO
 			}
 		}
-	}
-	/*class ZModel extends AbstractTableModel{
-
-	    private Object[][] data;
-
-	    public ZModel(Object[][] data){
-	      this.data = data;
-	    }
-	    public int getColumnCount() {
-	      return this.data[0].length;
-	    }
-	    public int getRowCount() {
-	      return this.data.length;
-	    }
-	    public Object getValueAt(int row, int col) {
-	      return this.data[row][col];
-	    }
-
-	}
-	public class CustomCellRenderer extends DefaultTableCellRenderer {
-	    @Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	        JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	        if (table.getValueAt(row,column) instanceof Enfant)
-	        {	
-	        	setIcon(new javax.swing.ImageIcon(getClass().getResource("/")));
-	        }if (table.getValueAt(row,column) instanceof Chocolat)
-	        {	
-	        	setIcon(new javax.swing.ImageIcon(getClass().getResource("/")));
-	        }if (table.getValueAt(row,column) instanceof CaseVide)
-	        {	
-	        	setIcon(new javax.swing.ImageIcon(getClass().getResource("/")));
-	        }if (table.getValueAt(row,column) instanceof Rocher)
-	        {	
-	        	setIcon(new javax.swing.ImageIcon(getClass().getResource("/")));
-	        }
-	        return l;
-	    }
-	}*/     
+	}     
 }
