@@ -139,7 +139,7 @@ public class TxtTerrain {
 			br.close(); 
 		
 		}catch (Exception e){		
-			System.out.println(e.toString());		
+			LOGGER.debug(e.toString());		
 		}
     	
     }
