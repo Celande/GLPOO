@@ -1,11 +1,18 @@
 package terrain.domain;
 
+import static terrain.domain.abstractcase.Orientation.EST;
+import static terrain.domain.abstractcase.Orientation.NORD;
+import static terrain.domain.abstractcase.Orientation.OUEST;
+import static terrain.domain.abstractcase.Orientation.SUD;
+
 import org.apache.log4j.Logger;
 
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.Chocolat;
+import terrain.domain.abstractcase.Deplacement;
 import terrain.domain.abstractcase.Enfant;
+import terrain.domain.abstractcase.Orientation;
 import terrain.domain.abstractcase.Rocher;
 
 public class Jardin implements Terrain {
@@ -96,19 +103,84 @@ public class Jardin implements Terrain {
 	}
 
 	public void bougerEnfants() {
-		//a finir
+		Enfant monEnfant = null;
+		int ligneEnfant = 0;
+		int colonneEnfant = 0;
+		Orientation orientationEnfant = monEnfant.getOrientation();
+		Deplacement deplacementEnfant = monEnfant.getDeplacements().get(0);
+		
 		for (int i = 0; i<getLigne(); i++){
 			for (int j = 0; j<getColonne(); j++){
 				if (table[i][j] instanceof Enfant){
-					int ligneEnfant = i;
-					int coloneEnfant = j;
-					i = getLigne();
-					j = getColonne();
+					monEnfant = (Enfant) table[i][j];
+					ligneEnfant = i;
+					colonneEnfant =j;
+					break;
 				}
 			}
+			if (monEnfant != null) {
+				break;
+			}
 		}
-		
-		
+			
+		switch (deplacementEnfant) {
+			case AVANT:
+				switch (orientationEnfant) {
+					case NORD:
+						ligneEnfant -= 1;
+						break;
+					case SUD:
+						ligneEnfant += 1;
+						break;
+					case OUEST:
+						colonneEnfant -= 1;
+						break;
+					case EST:
+						colonneEnfant += 1;
+						break;
+					default:
+						break;
+				}
+				break;
+			case GAUCHE:
+				switch (orientationEnfant) {
+					case NORD:
+						orientationEnfant = OUEST;
+						break;
+					case SUD:
+						orientationEnfant = EST;
+						break;
+					case OUEST:
+						orientationEnfant = SUD;
+						break;
+					case EST:
+						orientationEnfant = NORD;
+						break;
+					default:
+						break;
+				}
+				break;
+			case DROITE:
+				switch (orientationEnfant) {
+					case NORD:
+						orientationEnfant = Orientation.EST;
+						break;
+					case SUD:
+						orientationEnfant = Orientation.OUEST;
+						break;
+					case OUEST:
+						orientationEnfant = Orientation.NORD;
+						break;
+					case EST:
+						orientationEnfant = Orientation.SUD;
+						break;
+					default:
+						break;
+				}
+				break;
+			default:
+				break;
+		}		
 	}
 
 	public boolean equals(Terrain terrain) {
