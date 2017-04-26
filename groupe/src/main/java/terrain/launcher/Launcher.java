@@ -1,10 +1,12 @@
 package terrain.launcher;
 
+import terrain.gui.TerrainGUI;
+
 public class Launcher {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// Execution de la fenêtre
+		TerrainGUI terrainGUI = new TerrainGUI();
+	    terrainGUI.setVisible(true);
 	}
 
 }

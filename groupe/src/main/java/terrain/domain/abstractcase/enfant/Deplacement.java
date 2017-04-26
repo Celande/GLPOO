@@ -1,6 +1,4 @@
-package terrain.domain.abstractcase;
-
-import org.apache.log4j.Logger;
+package terrain.domain.abstractcase.enfant;
 
 public enum Deplacement {
 	AVANT,

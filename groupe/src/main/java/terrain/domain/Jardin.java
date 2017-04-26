@@ -1,18 +1,18 @@
 package terrain.domain;
 
-import static terrain.domain.abstractcase.Orientation.EST;
-import static terrain.domain.abstractcase.Orientation.NORD;
-import static terrain.domain.abstractcase.Orientation.OUEST;
-import static terrain.domain.abstractcase.Orientation.SUD;
+import static terrain.domain.abstractcase.enfant.Orientation.EST;
+import static terrain.domain.abstractcase.enfant.Orientation.NORD;
+import static terrain.domain.abstractcase.enfant.Orientation.OUEST;
+import static terrain.domain.abstractcase.enfant.Orientation.SUD;
 
 import org.apache.log4j.Logger;
 
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.Deplacement;
-import terrain.domain.abstractcase.Enfant;
-import terrain.domain.abstractcase.Orientation;
+import terrain.domain.abstractcase.enfant.Deplacement;
+import terrain.domain.abstractcase.enfant.Enfant;
+import terrain.domain.abstractcase.enfant.Orientation;
 import terrain.domain.abstractcase.Rocher;
 
 public class Jardin implements Terrain {

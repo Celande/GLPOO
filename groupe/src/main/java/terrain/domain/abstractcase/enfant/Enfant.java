@@ -1,7 +1,9 @@
-package terrain.domain.abstractcase;
+package terrain.domain.abstractcase.enfant;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import terrain.domain.abstractcase.AbstractCase;
 
 public class Enfant extends AbstractCase {
 	
@@ -15,8 +17,8 @@ public class Enfant extends AbstractCase {
 		this.deplacements = deplacements;
 	}
 	
-	public Enfant(Orientation orientation, String deplacements, String nom){
-		this.orientation = orientation;
+	public Enfant(char orientation, String deplacements, String nom){
+		this.orientation = Orientation.deLettreAOrientation(orientation);
 		this.nom = nom;
 		
 		this.deplacements = new ArrayList<Deplacement>();

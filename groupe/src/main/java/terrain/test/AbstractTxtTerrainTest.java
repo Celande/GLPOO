@@ -1,8 +1,8 @@
 package terrain.test;
 
 import static org.junit.Assert.*;
-import static terrain.domain.abstractcase.Deplacement.AVANT;
-import static terrain.domain.abstractcase.Orientation.SUD;
+import static terrain.domain.abstractcase.enfant.Deplacement.AVANT;
+import static terrain.domain.abstractcase.enfant.Orientation.SUD;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,15 +15,16 @@ import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.Deplacement;
-import terrain.domain.abstractcase.Enfant;
 import terrain.domain.abstractcase.Rocher;
+import terrain.domain.abstractcase.enfant.Deplacement;
+import terrain.domain.abstractcase.enfant.Enfant;
 
 public class AbstractTxtTerrainTest {
 	private static final Logger LOGGER = Logger.getLogger(AbstractTxtTerrainTest.class);
 
 	private final static String RESOURCES_PATH = "src/test/resources/";
 	private final static String TERRAIN_FILE_NAME = "terrain-01.txt";
+	private final static String ENFANT_FILE_NAME = "enfant-01.txt";
 
 	protected TxtTerrain terre;
 
@@ -31,8 +32,9 @@ public class AbstractTxtTerrainTest {
 	public void doBefore() {
 		LOGGER.debug("doBefore Debut");
 
-		final File file = new File(RESOURCES_PATH + TERRAIN_FILE_NAME);
-		terre.init(file);
+		final File fileTerrain = new File(RESOURCES_PATH + TERRAIN_FILE_NAME);
+		final File fileEnfant = new File(RESOURCES_PATH + ENFANT_FILE_NAME);
+		terre.init(fileTerrain, fileEnfant);
 
 		LOGGER.debug("doBefore Fin");
 	}
@@ -360,7 +362,10 @@ public class AbstractTxtTerrainTest {
 	
 	@Test (expected = UnsupportedOperationException.class)
 	public void testDeplacementInexistant(){
+		LOGGER.debug("testDeplacementInexistant... Debut");
 		
-		new Enfant(SUD, "AZA", "Aza");
+		new Enfant('s', "AZA", "Aza");
+		
+		LOGGER.debug("testDeplacementInexistant... Fin");
 	}
 }

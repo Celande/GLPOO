@@ -1,4 +1,4 @@
-package terrain.domain.abstractcase;
+package terrain.domain.abstractcase.enfant;
 
 public enum Orientation {
 	NORD,
