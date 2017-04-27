@@ -89,12 +89,18 @@ public class Jardin implements Terrain {
 			this.table[ligne][colonne] = abstractCase;
 			return true;
 		}
+		// Si l'enafnt tombe sur un chocolat, le score augmente
+		else if(this.table[ligne][colonne] instanceof Chocolat && abstractCase instanceof Enfant) {
+			int nbChocolat = ((Chocolat) this.table[ligne][colonne]).getNombre();
+			((Enfant) abstractCase).addScore(nbChocolat);
+			return true;
+		}
 		else{
 			LOGGER.debug("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
 			return false;
 		}
 	}
-
+	
 	public Integer getLigne() {
 
 		return this.ligne;
