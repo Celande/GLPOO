@@ -66,29 +66,32 @@ public class Jardin implements Terrain {
 	/**
 	 * Indices considérés comme étant de 1 à ligne ou colonne
 	 */
-	public void setCase(int colonne, int ligne, AbstractCase abstractCase) throws UnsupportedOperationException {
+	public boolean setCase(int colonne, int ligne, AbstractCase abstractCase) throws UnsupportedOperationException {
 
 		ligne--;
 		colonne--;
 		
 		// L'objet doit être ajoutée dans le tableau
 		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
-			throw new UnsupportedOperationException("La ligne ou la colonne est hors du tableau.");
+			return false;
 		
 		// On ne peut pas ajouter un objet nul
 		if(abstractCase == null)
-			throw new UnsupportedOperationException("L'objet à ajouter est nul.");
+			return false;
 		
 		// Ajout à un emplacement vide
-		if(this.table[ligne][colonne] instanceof CaseVide)
+		if(this.table[ligne][colonne] instanceof CaseVide) {
 			this.table[ligne][colonne] = abstractCase;
+			return true;
+		}
 		// Remplace un enfant par une case vide dans le cadre d'un déplacment
-		else if(this.table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide)
+		else if(this.table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide) {
 			this.table[ligne][colonne] = abstractCase;
-		
+			return true;
+		}
 		else{
 			LOGGER.debug("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
-			throw new UnsupportedOperationException("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
+			return false;
 		}
 	}
 
@@ -103,84 +106,130 @@ public class Jardin implements Terrain {
 	}
 
 	public void bougerEnfants() {
-		Enfant monEnfant = null;
-		int ligneEnfant = 0;
-		int colonneEnfant = 0;
-		Orientation orientationEnfant = monEnfant.getOrientation();
-		Deplacement deplacementEnfant = monEnfant.getDeplacements().get(0);
+		
+		Enfant monEnfant[] = new Enfant[10];
+		int monEnfantInit[] = new int[10];
+		int ligneEnfantInit[] = new int[10];
+		int colonneEnfantInit[] = new int[10];
+		int ligneEnfant[] = new int[10];
+		int colonneEnfant[] = new int [10];
+		
+		int compteur = 0;
 		
 		for (int i = 0; i<getLigne(); i++){
 			for (int j = 0; j<getColonne(); j++){
 				if (table[i][j] instanceof Enfant){
-					monEnfant = (Enfant) table[i][j];
-					ligneEnfant = i;
-					colonneEnfant =j;
-					break;
+					monEnfant[compteur] = (Enfant) table[i][j];
+					ligneEnfant[compteur] = i;
+					colonneEnfant[compteur] = j;
+					ligneEnfantInit[compteur] = i;
+					colonneEnfantInit[compteur] = j;
+					compteur += 1;
 				}
-			}
-			if (monEnfant != null) {
-				break;
 			}
 		}
+		
+		for (int l = 0; l<compteur; l++) {
 			
-		switch (deplacementEnfant) {
-			case AVANT:
-				switch (orientationEnfant) {
-					case NORD:
-						ligneEnfant -= 1;
+			Orientation orientationEnfant = monEnfant[l].getOrientation();
+			int nbDeplacement = monEnfant[l].getDeplacements().size();
+			
+			LOGGER.debug("nouveau enfant");
+			
+			for (int k = 0; k<nbDeplacement; k++) {
+				Deplacement deplacementEnfant = monEnfant[l].getDeplacements().get(k);
+				
+				switch (deplacementEnfant) {
+					case AVANT:
+						LOGGER.debug("avant");
+						switch (orientationEnfant) {
+							case NORD:
+								ligneEnfant[l] -= 1;
+								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+									ligneEnfant[l] += 1;
+								}
+								LOGGER.debug("nord");
+								break;
+							case SUD:
+								ligneEnfant[l] += 1;
+								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+									ligneEnfant[l] -= 1;
+								}
+								LOGGER.debug("sud");
+								break;
+							case OUEST:
+								colonneEnfant[l] -= 1;
+								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+									colonneEnfant[l] += 1;
+								}
+								LOGGER.debug("ouest");
+								break;
+							case EST:
+								colonneEnfant[l] += 1;
+								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+									colonneEnfant[l] -= 1;
+								}
+								LOGGER.debug("est");
+								break;
+							default:
+								break;
+						}
 						break;
-					case SUD:
-						ligneEnfant += 1;
+					case GAUCHE:
+						LOGGER.debug("gauche");
+						switch (orientationEnfant) {
+							case NORD:
+								orientationEnfant = OUEST;
+								LOGGER.debug("nord->ouest");
+								break;
+							case SUD:
+								orientationEnfant = EST;
+								LOGGER.debug("sud->est");
+								break;
+							case OUEST:
+								orientationEnfant = SUD;
+								LOGGER.debug("ouest->sud");
+								break;
+							case EST:
+								orientationEnfant = NORD;
+								LOGGER.debug("est->nord");
+								break;
+							default:
+								break;
+						}
 						break;
-					case OUEST:
-						colonneEnfant -= 1;
-						break;
-					case EST:
-						colonneEnfant += 1;
+					case DROITE:
+						LOGGER.debug("droite");
+						switch (orientationEnfant) {
+							case NORD:
+								orientationEnfant = Orientation.EST;
+								LOGGER.debug("nord->est");
+								break;
+							case SUD:
+								orientationEnfant = Orientation.OUEST;
+								LOGGER.debug("sud->ouest");
+								break;
+							case OUEST:
+								orientationEnfant = Orientation.NORD;
+								LOGGER.debug("ouest->nord");
+								break;
+							case EST:
+								orientationEnfant = Orientation.SUD;
+								LOGGER.debug("est->sud");
+								break;
+							default:
+								break;
+						}
 						break;
 					default:
 						break;
 				}
-				break;
-			case GAUCHE:
-				switch (orientationEnfant) {
-					case NORD:
-						orientationEnfant = OUEST;
-						break;
-					case SUD:
-						orientationEnfant = EST;
-						break;
-					case OUEST:
-						orientationEnfant = SUD;
-						break;
-					case EST:
-						orientationEnfant = NORD;
-						break;
-					default:
-						break;
-				}
-				break;
-			case DROITE:
-				switch (orientationEnfant) {
-					case NORD:
-						orientationEnfant = Orientation.EST;
-						break;
-					case SUD:
-						orientationEnfant = Orientation.OUEST;
-						break;
-					case OUEST:
-						orientationEnfant = Orientation.NORD;
-						break;
-					case EST:
-						orientationEnfant = Orientation.SUD;
-						break;
-					default:
-						break;
-				}
-				break;
-			default:
-				break;
-		}		
+				table[ligneEnfantInit[l]][colonneEnfantInit[l]] = new CaseVide();
+				LOGGER.debug("effacement enfant precedent");
+				table[ligneEnfant[l]][colonneEnfant[l]] = monEnfant[l];
+				LOGGER.debug("nouvelle position enfant");
+			}
+		}
 	}
 
 	public boolean equals(Terrain terrain) {
