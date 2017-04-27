@@ -24,7 +24,7 @@ public class Jardin implements Terrain {
 	private static final Logger LOGGER = Logger.getLogger(Jardin.class);
 
 	private static Jardin instance = null;
-
+	
 	private Jardin(int colonne, int ligne){
 		// Initialisation des lignes et colonnes
 		this.ligne = ligne;
@@ -107,13 +107,11 @@ public class Jardin implements Terrain {
 
 	public void bougerEnfants() {
 		
-		Enfant monEnfant[] = new Enfant[10];
-		int monEnfantInit[] = new int[10];
-		int ligneEnfantInit[] = new int[10];
-		int colonneEnfantInit[] = new int[10];
-		int ligneEnfant[] = new int[10];
-		int colonneEnfant[] = new int [10];
-		
+		Enfant monEnfant[] = new Enfant[25];
+		int ligneEnfantInit[] = new int[25];
+		int colonneEnfantInit[] = new int[25];
+		int ligneEnfant[] = new int[25];
+		int colonneEnfant[] = new int [25];
 		int compteur = 0;
 		
 		for (int i = 0; i<getLigne(); i++){
@@ -132,13 +130,11 @@ public class Jardin implements Terrain {
 		for (int l = 0; l<compteur; l++) {
 			
 			Orientation orientationEnfant = monEnfant[l].getOrientation();
-			int nbDeplacement = monEnfant[l].getDeplacements().size();
 			
 			LOGGER.debug("nouveau enfant");
 			
-			for (int k = 0; k<nbDeplacement; k++) {
-				Deplacement deplacementEnfant = monEnfant[l].getDeplacements().get(k);
-				
+			if (monEnfant[l].getDeplacements().size() > 0) {
+				Deplacement deplacementEnfant = monEnfant[l].getDeplacements().get(0);
 				switch (deplacementEnfant) {
 					case AVANT:
 						LOGGER.debug("avant");
@@ -228,10 +224,39 @@ public class Jardin implements Terrain {
 				LOGGER.debug("effacement enfant precedent");
 				table[ligneEnfant[l]][colonneEnfant[l]] = monEnfant[l];
 				LOGGER.debug("nouvelle position enfant");
+				monEnfant[l].getDeplacements().remove(0);
 			}
 		}
 	}
 
+	public void bougerEnfantsBoucle() {
+		
+		Enfant monEnfant[] = new Enfant[25];
+		int compteur = 0;
+		int maxDeplacements = 0;
+		
+		for (int i = 0; i<getLigne(); i++){
+			for (int j = 0; j<getColonne(); j++){
+				if (table[i][j] instanceof Enfant){
+					monEnfant[compteur] = (Enfant) table[i][j];
+					compteur += 1;
+				}
+			}
+		}
+		
+		for (int l = 0; l<compteur; l++) {
+			int nbDeplacements = monEnfant[l].getDeplacements().size();
+			
+			if (nbDeplacements > maxDeplacements) {
+				maxDeplacements = nbDeplacements;
+			}
+		}
+		
+		for (int m = 0; m<maxDeplacements; m++) {
+			bougerEnfants();
+		}
+	}
+	
 	public boolean equals(Terrain terrain) {
 		try{ // Au cas où une des valeurs seraient nulle
 
