@@ -7,6 +7,7 @@ import terrain.domain.abstractcase.AbstractCase;
 
 public class Enfant extends AbstractCase {
 	
+	private int score;
 	private String nom;
 	private Orientation  orientation;
 	private List<Deplacement> deplacements;
@@ -15,11 +16,13 @@ public class Enfant extends AbstractCase {
 		this.orientation = orientation;
 		this.nom = nom;
 		this.deplacements = deplacements;
+		this.score = 0;
 	}
 	
 	public Enfant(char orientation, String deplacements, String nom){
 		this.orientation = Orientation.deLettreAOrientation(orientation);
 		this.nom = nom;
+		this.score = 0;
 		
 		this.deplacements = new ArrayList<Deplacement>();
 		for(char c : deplacements.toCharArray()){
@@ -27,6 +30,10 @@ public class Enfant extends AbstractCase {
 		}
 	}
 
+	public void addScore (int nbChocolat) {
+		this.score += nbChocolat;
+	}
+	
 	public String getNom(){
 		
 		return this.nom;
