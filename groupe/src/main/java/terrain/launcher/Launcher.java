@@ -1,6 +1,7 @@
 package terrain.launcher;
 
 import terrain.domain.Jardin;
+import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.enfant.Enfant;
 import terrain.domain.abstractcase.enfant.Orientation;
 import terrain.gui.TerrainGUI;
@@ -14,6 +15,7 @@ public class Launcher {
 		Jardin jardin = Jardin.getInstance(5, 5);
 		jardin.setCase(1, 1, new Enfant('E', "AADA", "OuiOui"));
 		jardin.setCase(4, 2, new Enfant('S', "AGAG", "OuiOui"));
+		jardin.setCase(4, 2, new CaseVide());
 		jardin.bougerEnfantsBoucle();
 	}
 }
