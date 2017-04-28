@@ -1,2 +1,0 @@
-# enfant(E) position initiale(colonne-ligne) orientation initiale(N|E|S|W) deplacements(A|G|D) nom
-E 1-1 E AADADAGA Julien
