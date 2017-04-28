@@ -1,0 +1,4 @@
+# enfant(E) position initiale(colonne-ligne) orientation initiale(N|E|S|W) deplacements(A|G|D) nom
+E 3-5 N AAGAGADAG Paul
+E 4-3 N AAGAGADAG Pierre
+E 6-5 N AAGAGADAG Jacques
