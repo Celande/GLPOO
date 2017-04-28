@@ -42,8 +42,8 @@ public class TerrainGUI extends JFrame{
 		Jardin jardin=Jardin.getInstance(5,5);
 		jardin.setCase(1, 1, new Rocher());
 		jardin.setCase(2, 2, new Rocher());
-		jardin.setCase(3, 3, new Chocolat(6));
-		jardin.setCase(3, 2, new Enfant('E',"AAGDDADAAA","Pedro"));
+		jardin.setCase(3, 3, new Chocolat(2));
+		jardin.setCase(3, 2, new Enfant('E',"AAGDDADAAAGA","Pedro"));
 		update(jardin.getTable(),jardin.getLigne(),jardin.getColonne(),true);
 		jardin.bougerEnfantsBoucle();
 	}
@@ -138,9 +138,6 @@ public class TerrainGUI extends JFrame{
 		   }
 		}
 		frame.pack();
-	}
-	public static void main(String[] args){
-		    TerrainGUI terrainGUI = new TerrainGUI();
-	}       
+	}      
 }
 

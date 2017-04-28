@@ -3,7 +3,8 @@ package terrain.domain.abstractcase.enfant;
 public enum Deplacement {
 	AVANT,
 	GAUCHE,
-	DROITE;
+	DROITE,
+	PATIENTE;
 	
 	public static Deplacement deLettreADeplacement(char c) throws UnsupportedOperationException{
 		switch(c){

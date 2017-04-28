@@ -4,11 +4,10 @@ import terrain.domain.Jardin;
 import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.enfant.Enfant;
 import terrain.domain.abstractcase.enfant.Orientation;
-import terrain.gui.TerrainGUI;
-
+import terrain.domain.TerrainGUI;
 public class Launcher {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		//TerrainGUI terrainGUI = new TerrainGUI();
 	    //terrainGUI.setVisible(true);
 		
@@ -17,5 +16,8 @@ public class Launcher {
 		jardin.setCase(4, 2, new Enfant('S', "AGAG", "OuiOui"));
 		jardin.setCase(4, 2, new CaseVide());
 		jardin.bougerEnfantsBoucle();
-	}
+	}*/
+	public static void main(String[] args){
+	    TerrainGUI terrainGUI = new TerrainGUI();
+	} 
 }

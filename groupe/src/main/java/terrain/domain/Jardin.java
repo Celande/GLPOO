@@ -5,6 +5,8 @@ import static terrain.domain.abstractcase.enfant.Orientation.NORD;
 import static terrain.domain.abstractcase.enfant.Orientation.OUEST;
 import static terrain.domain.abstractcase.enfant.Orientation.SUD;
 
+import javax.swing.JLabel;
+
 import org.apache.log4j.Logger;
 
 import terrain.domain.abstractcase.AbstractCase;
@@ -71,6 +73,8 @@ public class Jardin implements Terrain {
 		ligne--;
 		colonne--;
 		
+		LOGGER.debug("ligne = " + ligne + " colonne = "+ colonne);
+		
 		// L'objet doit être ajoutée dans le tableau
 		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
 			return false;
@@ -89,10 +93,16 @@ public class Jardin implements Terrain {
 			this.table[ligne][colonne] = abstractCase;
 			return true;
 		}
-		// Si l'enafnt tombe sur un chocolat, le score augmente
+		// Si l'enfant tombe sur un chocolat, le score augmente
 		else if(this.table[ligne][colonne] instanceof Chocolat && abstractCase instanceof Enfant) {
 			int nbChocolat = ((Chocolat) this.table[ligne][colonne]).getNombre();
-			((Enfant) abstractCase).addScore(nbChocolat);
+			LOGGER.debug("nbchoco = " + nbChocolat);
+			for (int i=0;i<nbChocolat;i++)
+			{
+				((Enfant) abstractCase).getDeplacements().add(1,Deplacement.PATIENTE);
+			}
+			this.table[ligne][colonne] = abstractCase;
+			
 			return true;
 		}
 		else{
@@ -147,30 +157,31 @@ public class Jardin implements Terrain {
 						switch (orientationEnfant) {
 							case NORD:
 								ligneEnfant[l] -= 1;
-								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
 									ligneEnfant[l] += 1;
 								}
+								*/
 								LOGGER.debug("nord");
 								break;
 							case SUD:
 								ligneEnfant[l] += 1;
-								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
 									ligneEnfant[l] -= 1;
-								}
+								}*/
 								LOGGER.debug("sud");
 								break;
 							case OUEST:
 								colonneEnfant[l] -= 1;
-								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
 									colonneEnfant[l] += 1;
-								}
+								}*/
 								LOGGER.debug("ouest");
 								break;
 							case EST:
 								colonneEnfant[l] += 1;
-								if (setCase(colonneEnfant[l], ligneEnfant[l], new CaseVide()) == false) {
+								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
 									colonneEnfant[l] -= 1;
-								}
+								}*/
 								LOGGER.debug("est");
 								break;
 							default:
@@ -223,13 +234,20 @@ public class Jardin implements Terrain {
 								break;
 						}
 						break;
+					case PATIENTE:
+						LOGGER.debug("patiente");
+						monEnfant[l].addScore(1); 
+						break;
 					default:
 						break;
 				}
 				monEnfant[l].setOrientation(orientationEnfant);
-				table[ligneEnfantInit[l]][colonneEnfantInit[l]] = new CaseVide();
+				//table[ligneEnfantInit[l]][colonneEnfantInit[l]] = new CaseVide();
+				setCase(colonneEnfantInit[l]+1,ligneEnfantInit[l]+1,new CaseVide());
 				LOGGER.debug("effacement enfant precedent");
-				table[ligneEnfant[l]][colonneEnfant[l]] = monEnfant[l];
+				//table[ligneEnfant[l]][colonneEnfant[l]] = monEnfant[l];
+				if(!setCase(colonneEnfant[l]+1,ligneEnfant[l]+1,monEnfant[l]))
+					setCase(colonneEnfantInit[l]+1,ligneEnfantInit[l]+1,monEnfant[l]);
 				LOGGER.debug("nouvelle position enfant");
 				monEnfant[l].getDeplacements().remove(0);
 			}
