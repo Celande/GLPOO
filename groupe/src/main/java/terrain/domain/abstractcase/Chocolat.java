@@ -1,5 +1,11 @@
 package terrain.domain.abstractcase;
 
+/**
+ * Chocolat a ramasser
+ * @author Célande
+ *
+ */
+
 public class Chocolat extends AbstractCase {
 
 	private int nombre;
@@ -9,7 +15,6 @@ public class Chocolat extends AbstractCase {
 	}
 	
 	public int getNombre() {
-
 		return nombre;
 	}
 

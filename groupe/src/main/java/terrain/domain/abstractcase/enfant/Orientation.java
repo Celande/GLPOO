@@ -1,5 +1,11 @@
 package terrain.domain.abstractcase.enfant;
 
+/**
+ * Enumeration des orientations possibles de l'enfant
+ * @author Célande
+ *
+ */
+
 public enum Orientation {
 	NORD,
 	SUD,
@@ -23,7 +29,20 @@ public enum Orientation {
 		case 'O':
 			return OUEST;
 		}
-		
 		throw new UnsupportedOperationException("La lettre " + c + " ne correspond à aucune orientation.");
+	}
+	
+	public String toString(){
+		switch(this){
+		case NORD:
+			return "Nord";
+		case SUD:
+			return "Sud";
+		case EST:
+			return "Est";
+		case OUEST:
+			return "Ouest";
+		}
+		return "";
 	}
 }

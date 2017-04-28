@@ -1,65 +1,81 @@
 package terrain.domain;
 
-import static terrain.domain.abstractcase.enfant.Orientation.EST;
-import static terrain.domain.abstractcase.enfant.Orientation.NORD;
-import static terrain.domain.abstractcase.enfant.Orientation.OUEST;
-import static terrain.domain.abstractcase.enfant.Orientation.SUD;
-
-import javax.swing.JLabel;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.log4j.Logger;
 
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.CaseVide;
 import terrain.domain.abstractcase.Chocolat;
-import terrain.domain.abstractcase.enfant.Deplacement;
-import terrain.domain.abstractcase.enfant.Enfant;
-import terrain.domain.abstractcase.enfant.Orientation;
 import terrain.domain.abstractcase.Rocher;
+import terrain.domain.abstractcase.enfant.Enfant;
+
+/**
+ * Zone ou va se passer la chasse aux oeufs
+ * @author Célande
+ *
+ */
 
 public class Jardin implements Terrain {
 
 	private int ligne;
 	private int colonne;
 	private AbstractCase[][] table;
+	private HashMap<int[], Enfant> coordEnfants;
+	private HashMap<String, Integer> scoreEnfants;
 
 	private static final Logger LOGGER = Logger.getLogger(Jardin.class);
 
-	private static Jardin instance = null;
-	
-	private Jardin(int colonne, int ligne){
+	public Jardin(int colonne, int ligne){
 		// Initialisation des lignes et colonnes
 		this.ligne = ligne;
 		this.colonne = colonne;
-		
+		this.coordEnfants = new HashMap<int[], Enfant>();
+
 		// Initialisation du tableau avec toutes les cases vides
 		table = new AbstractCase[ligne][];
 		for(int i=0; i<ligne;i++){
 			table[i] = new AbstractCase[colonne];
-			
+
 			for(int j=0; j<colonne;j++){
 				table[i][j] = new CaseVide();
 			}
 		}
 	}
 
-	public static Jardin getInstance(int colonne, int ligne){
-		if(instance == null){
-			instance = new Jardin(colonne, ligne);
+	/**
+	 * Initialisation des HashMap
+	 * Elles evitent d'avoir a parcourir le tableau a chaque fois qu'on met a jour un enfant
+	 */
+	public void initCoordEnfants(){
+		LOGGER.debug("initCoordEnfants"); 
+
+		// Initialisation
+		coordEnfants = new HashMap<int[], Enfant>();
+		scoreEnfants = new HashMap<String, Integer>();
+
+		// Parcours de la table
+		for(int i=0; i<ligne; i++){
+			for(int j=0; j<colonne; j++){
+
+				if(table[i][j] instanceof Enfant){
+					int[] coord = {i, j};
+					coordEnfants.put(coord, ((Enfant)table[i][j]));
+					scoreEnfants.put(((Enfant)table[i][j]).getNom(), ((Enfant)table[i][j]).getScore());
+				}
+			}
 		}
-		return instance;
 	}
 
 	public AbstractCase[][] getTable() {
 
 		return this.table;
 	}
-	
+
 	/**
 	 * Indices considérés comme étant de 1 à ligne ou colonne
 	 */
 	public AbstractCase getCase(int colonne, int ligne) {
-
 		ligne--;
 		colonne--;
 		return this.table[ligne][colonne];
@@ -73,44 +89,42 @@ public class Jardin implements Terrain {
 		ligne--;
 		colonne--;
 		
-		LOGGER.debug("ligne = " + ligne + " colonne = "+ colonne);
-		
 		// L'objet doit être ajoutée dans le tableau
-		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0)
+		if(ligne >= this.ligne || ligne < 0 || colonne >= this.colonne || colonne < 0){
+			LOGGER.debug("La ligne ou la colonne est hors du tableau.");
 			return false;
-		
+		}
+
 		// On ne peut pas ajouter un objet nul
 		if(abstractCase == null)
-			return false;
-		
+			throw new UnsupportedOperationException("L'objet à ajouter est nul.");
+
 		// Ajout à un emplacement vide
-		if(this.table[ligne][colonne] instanceof CaseVide) {
+		if(this.table[ligne][colonne] instanceof CaseVide){
 			this.table[ligne][colonne] = abstractCase;
 			return true;
 		}
-		// Remplace un enfant par une case vide dans le cadre d'un déplacment
-		else if(this.table[ligne][colonne] instanceof Enfant && abstractCase instanceof CaseVide) {
+
+		// L'enfant rencontre un chocolat
+		if(this.table[ligne][colonne] instanceof Chocolat && abstractCase instanceof Enfant){
+			((Enfant)abstractCase).recupChoco((Chocolat)table[ligne][colonne]);
 			this.table[ligne][colonne] = abstractCase;
 			return true;
 		}
-		// Si l'enfant tombe sur un chocolat, le score augmente
-		else if(this.table[ligne][colonne] instanceof Chocolat && abstractCase instanceof Enfant) {
-			int nbChocolat = ((Chocolat) this.table[ligne][colonne]).getNombre();
-			LOGGER.debug("nbchoco = " + nbChocolat);
-			for (int i=0;i<nbChocolat;i++)
-			{
-				((Enfant) abstractCase).getDeplacements().add(1,Deplacement.PATIENTE);
-			}
-			this.table[ligne][colonne] = abstractCase;
-			
-			return true;
-		}
-		else{
-			LOGGER.debug("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
+		else{ // La case n'est pas vide ou il ne s'agit pas d'un enfant
 			return false;
 		}
 	}
-	
+
+	public void effacerEnfant(int ligne, int colonne)throws UnsupportedOperationException{
+		if(this.table[ligne][colonne] instanceof Enfant)
+			this.table[ligne][colonne] = new CaseVide();
+		else{
+			LOGGER.debug("ligne = " + (ligne+1) + " colonne = " + (colonne+1));
+			throw new UnsupportedOperationException("La case n'est pas vide ou il ne s'agit pas d'un enfant.");
+		}
+	}
+
 	public Integer getLigne() {
 
 		return this.ligne;
@@ -122,180 +136,90 @@ public class Jardin implements Terrain {
 	}
 
 	public void bougerEnfants() {
-		
-		Enfant monEnfant[] = new Enfant[25];
-		int ligneEnfantInit[] = new int[25];
-		int colonneEnfantInit[] = new int[25];
-		int ligneEnfant[] = new int[25];
-		int colonneEnfant[] = new int [25];
-		int compteur = 0;
-		
-		for (int i = 0; i<getLigne(); i++){
-			for (int j = 0; j<getColonne(); j++){
-				if (table[i][j] instanceof Enfant){
-					monEnfant[compteur] = (Enfant) table[i][j];
-					ligneEnfant[compteur] = i;
-					colonneEnfant[compteur] = j;
-					ligneEnfantInit[compteur] = i;
-					colonneEnfantInit[compteur] = j;
-					compteur += 1;
+		LOGGER.debug("bougerEnfants");
+
+		// Garde en mémoire la nouvelle position de l'enfant
+		HashMap<int[], Enfant> save = new HashMap<int[], Enfant>();
+
+		// Parcours de coordEnfants
+		for (Map.Entry<int[], Enfant> entry : coordEnfants.entrySet()) {
+			int[] oldCoord = entry.getKey();
+			Enfant enfant = entry.getValue();
+
+			if(enfant.getPrendChoco() == 0){
+				// Il reste des deplacements
+				if(enfant.getDeplacements() != null && enfant.getDeplacements().size() > 0){
+					int[] newCoord = new int[2]; // Prend les coordonnees initiales
+					newCoord[0] = oldCoord[0];
+					newCoord[1] = oldCoord[1];
+
+					// Avance
+					if(enfant.bougerParDefaut()){ // Gere le changement d'orientation
+						switch(enfant.getOrientation()){
+						case NORD:
+							if(oldCoord[0] > 0) // Collision avec les bords
+								newCoord[0] = oldCoord[0]-1; // Monte
+							break;
+						case SUD:
+							if(oldCoord[0] < ligne) // Collision avec les bords
+								newCoord[0] = oldCoord[0]+1; // Descend
+							break;
+						case EST:
+							if(oldCoord[1] < colonne) // Collision avec les bords
+								newCoord[1] = oldCoord[1]+1; // Va a droite
+							break;
+						case OUEST:
+							if(oldCoord[1] > 0) // Collision avec les bords
+								newCoord[1] = oldCoord[1]-1; // Va a gauche
+							break;
+						}
+					}
+
+					// Retrait du deplacement traite
+					enfant.getDeplacements().remove(0);
+
+					// Ajout de l'enfant a sa nouvelle position
+					if(setCase(newCoord[1]+1, newCoord[0]+1, enfant)){
+						effacerEnfant(oldCoord[0], oldCoord[1]);
+						save.put(newCoord, enfant);
+						//LOGGER.debug("[new] " + enfant.getNom() + " est en [" + (newCoord[1]+1) + ", " + (newCoord[0]+1) + "] vers " + enfant.getOrientation() );
+					}
+					// L'enfant reste au meme endroit
+					else{
+						save.put(oldCoord, enfant);
+						//LOGGER.debug("[old] " + enfant.getNom() + " est en [" + (oldCoord[1]+1) + ", " + (oldCoord[0]+1) + "] vers " + enfant.getOrientation() );
+					}
+					scoreEnfants.put(enfant.getNom(), enfant.getScore());
 				}
+			}else{ // L'enfant prend un choco => pas besoin de bouger
+				//LOGGER.debug(enfant.getNom() + " prendChoco");
+				enfant.remPrendChoco();
+
+				save.put(oldCoord, enfant);
+
+				// Score
+				scoreEnfants.put(enfant.getNom(), enfant.getScore());
 			}
 		}
-		
-		for (int l = 0; l<compteur; l++) {
-			
-			Orientation orientationEnfant = monEnfant[l].getOrientation();
-			
-			LOGGER.debug("nouveau enfant");
-			
-			if (monEnfant[l].getDeplacements().size() > 0) {
-				Deplacement deplacementEnfant = monEnfant[l].getDeplacements().get(0);
-				switch (deplacementEnfant) {
-					case AVANT:
-						LOGGER.debug("avant");
-						switch (orientationEnfant) {
-							case NORD:
-								ligneEnfant[l] -= 1;
-								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
-									ligneEnfant[l] += 1;
-								}
-								*/
-								LOGGER.debug("nord");
-								break;
-							case SUD:
-								ligneEnfant[l] += 1;
-								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
-									ligneEnfant[l] -= 1;
-								}*/
-								LOGGER.debug("sud");
-								break;
-							case OUEST:
-								colonneEnfant[l] -= 1;
-								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
-									colonneEnfant[l] += 1;
-								}*/
-								LOGGER.debug("ouest");
-								break;
-							case EST:
-								colonneEnfant[l] += 1;
-								/*if (setCase(colonneEnfant[l]+1, ligneEnfant[l]+1, new CaseVide()) == false) {
-									colonneEnfant[l] -= 1;
-								}*/
-								LOGGER.debug("est");
-								break;
-							default:
-								break;
-						}
-						break;
-					case GAUCHE:
-						LOGGER.debug("gauche");
-						switch (orientationEnfant) {
-							case NORD:
-								orientationEnfant = OUEST;
-								LOGGER.debug("nord->ouest");
-								break;
-							case SUD:
-								orientationEnfant = EST;
-								LOGGER.debug("sud->est");
-								break;
-							case OUEST:
-								orientationEnfant = SUD;
-								LOGGER.debug("ouest->sud");
-								break;
-							case EST:
-								orientationEnfant = NORD;
-								LOGGER.debug("est->nord");
-								break;
-							default:
-								break;
-						}
-						break;
-					case DROITE:
-						LOGGER.debug("droite");
-						switch (orientationEnfant) {
-							case NORD:
-								orientationEnfant = Orientation.EST;
-								LOGGER.debug("nord->est");
-								break;
-							case SUD:
-								orientationEnfant = Orientation.OUEST;
-								LOGGER.debug("sud->ouest");
-								break;
-							case OUEST:
-								orientationEnfant = Orientation.NORD;
-								LOGGER.debug("ouest->nord");
-								break;
-							case EST:
-								orientationEnfant = Orientation.SUD;
-								LOGGER.debug("est->sud");
-								break;
-							default:
-								break;
-						}
-						break;
-					case PATIENTE:
-						LOGGER.debug("patiente");
-						monEnfant[l].addScore(1); 
-						break;
-					default:
-						break;
-				}
-				monEnfant[l].setOrientation(orientationEnfant);
-				//table[ligneEnfantInit[l]][colonneEnfantInit[l]] = new CaseVide();
-				setCase(colonneEnfantInit[l]+1,ligneEnfantInit[l]+1,new CaseVide());
-				LOGGER.debug("effacement enfant precedent");
-				//table[ligneEnfant[l]][colonneEnfant[l]] = monEnfant[l];
-				if(!setCase(colonneEnfant[l]+1,ligneEnfant[l]+1,monEnfant[l]))
-					setCase(colonneEnfantInit[l]+1,ligneEnfantInit[l]+1,monEnfant[l]);
-				LOGGER.debug("nouvelle position enfant");
-				monEnfant[l].getDeplacements().remove(0);
-			}
+		// Mise a jour de coordEnfant
+		coordEnfants = save;
+	}
+
+	public void bougerEnfantsBoucle(){
+		// Tant qu'il y a des enfants
+		initCoordEnfants();
+		while(coordEnfants != null && coordEnfants.size() > 0){
+			bougerEnfants();
 		}
 	}
 
-	public void bougerEnfantsBoucle() {
-		
-		Enfant monEnfant[] = new Enfant[25];
-		int compteur = 0;
-		int maxDeplacements = 0;
-		
-		for (int i = 0; i<getLigne(); i++){
-			for (int j = 0; j<getColonne(); j++){
-				if (table[i][j] instanceof Enfant){
-					monEnfant[compteur] = (Enfant) table[i][j];
-					compteur += 1;
-				}
-			}
-		}
-		
-		for (int l = 0; l<compteur; l++) {
-			int nbDeplacements = monEnfant[l].getDeplacements().size();
-			
-			if (nbDeplacements > maxDeplacements) {
-				maxDeplacements = nbDeplacements;
-			}
-		}
-		
-		for (int m = 0; m<maxDeplacements; m++) {
-			bougerEnfants();
-			TerrainGUI.update(table,getLigne(),getColonne());
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	public boolean equals(Terrain terrain) {
 		try{ // Au cas où une des valeurs seraient nulle
 
 			// Doit être un Jardin
 			if(terrain instanceof Jardin == false)
 				return false;
-			
+
 			// Doit avoir le même nombre de lignes
 			if(this.ligne != terrain.getLigne())
 				return false;
@@ -309,38 +233,40 @@ public class Jardin implements Terrain {
 			for(int i=0; i<this.ligne; i++){
 				for(int j=0; j<this.colonne; j++){
 					// Une case vide
-					if(this.table[i][j] instanceof CaseVide && (tableCopie[i][j] instanceof CaseVide == false))
-						return false;
-
-					// Un rocher
-					else if(this.table[i][j] instanceof Rocher && (tableCopie[i][j] instanceof Rocher == false))
-						return false;
-
-					else if(this.table[i][j] instanceof Chocolat){
-						// Un chocolat
-						if(tableCopie[i][j] instanceof Chocolat){
-							// Avec le même nombre
-							if(((Chocolat)table[i][j]).getNombre() != ((Chocolat)tableCopie[i][j]).getNombre())
-								return false;
-						}
-						else
+					if(this.table[i][j] instanceof CaseVide)
+						if((tableCopie[i][j] instanceof CaseVide == false))
 							return false;
-					}
 
-					else if(this.table[i][j] instanceof Enfant){
-						// Un enfant
-						if(tableCopie[i][j] instanceof Enfant){
-							// Identique
-							if(!((Enfant)this.table[i][j]).equals((Enfant)tableCopie[i][j]))
+						// Un rocher
+						else if(this.table[i][j] instanceof Rocher)
+							if((tableCopie[i][j] instanceof Rocher == false))
 								return false;
-						}
-						else
-							return false;
-					}
-					else{
-						LOGGER.debug("Le type de case n'est pas reconnu.");
-						return false;
-					}
+
+							else if(this.table[i][j] instanceof Chocolat){
+								// Un chocolat
+								if(tableCopie[i][j] instanceof Chocolat){
+									// Avec le même nombre
+									if(((Chocolat)table[i][j]).getNombre() != ((Chocolat)tableCopie[i][j]).getNombre())
+										return false;
+								}
+								else
+									return false;
+							}
+
+							else if(this.table[i][j] instanceof Enfant){
+								// Un enfant
+								if(tableCopie[i][j] instanceof Enfant){
+									// Identique
+									if(!((Enfant)this.table[i][j]).equals((Enfant)tableCopie[i][j]))
+										return false;
+								}
+								else
+									return false;
+							}
+							else{
+								LOGGER.debug("Le type de case n'est pas reconnu.");
+								return false;
+							}
 				}
 			}
 		}
@@ -348,5 +274,13 @@ public class Jardin implements Terrain {
 			return false;
 		}
 		return true;
+	}
+
+	public HashMap<int[], Enfant> getCoordEnfants(){
+		return coordEnfants;
+	}
+
+	public HashMap<String, Integer> getScoreEnfants(){
+		return scoreEnfants;
 	}
 }

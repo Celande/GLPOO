@@ -1,10 +1,15 @@
 package terrain.domain.abstractcase.enfant;
 
+/**
+ * Enumeration des deplacements possibles de l'enfant
+ * @author Célande
+ *
+ */
+
 public enum Deplacement {
 	AVANT,
 	GAUCHE,
-	DROITE,
-	PATIENTE;
+	DROITE;
 	
 	public static Deplacement deLettreADeplacement(char c) throws UnsupportedOperationException{
 		switch(c){
@@ -18,7 +23,6 @@ public enum Deplacement {
 		case 'D':
 			return DROITE;
 		}
-		
 		throw new UnsupportedOperationException("La lettre " + c + " ne correspond à aucun déplacement.");
 	}
 }

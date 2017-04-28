@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import terrain.domain.Jardin;
 import terrain.domain.Terrain;
 import terrain.domain.abstractcase.AbstractCase;
 import terrain.domain.abstractcase.Chocolat;
@@ -31,55 +30,13 @@ public class AbstractTxtTerrainTest {
 	@Before 
 	public void doBefore() {
 		LOGGER.debug("doBefore Debut");
-
 		final File fileTerrain = new File(RESOURCES_PATH + TERRAIN_FILE_NAME);
 		final File fileEnfant = new File(RESOURCES_PATH + ENFANT_FILE_NAME);
+
+		terre = new TxtTerrain();
 		terre.init(fileTerrain, fileEnfant);
 
 		LOGGER.debug("doBefore Fin");
-	}
-
-	/**
-	 * On vérifie que l'objet terrain de terre est bien un singleton
-	 * PARAM : terrainUsed
-	 */
-	@Test 
-	public void testJardinSingletonAvecMemeLignesEtColonnes(){
-		LOGGER.debug("testJardinSingletonAvecMemeLignesEtColonnes... Debut");
-
-		// Arrange
-		Jardin terrainUsed = (Jardin)terre.getTerrain();
-
-		// Act
-		Jardin terrainCopy = Jardin.getInstance(terrainUsed.getColonne(), terrainUsed.getLigne());
-		final boolean test = terrainUsed.equals(terrainCopy);
-
-		// Assert
-		assertTrue(test);
-
-		LOGGER.debug("testJardinSingletonAvecMemeLignesEtColonnes... Fin");
-	}
-
-	/**
-	 * On vérifie que l'objet terrain de terre est bien un singleton 
-	 * malgré le nombre de lignes et colonnes différentes
-	 * PARAM : terrainUsed
-	 */
-	@Test 
-	public void testJardinSingletonAvecDifferentesLignesEtColonnes(){
-		LOGGER.debug("testJardinSingletonAvecDifferentesLignesEtColonnes... Debut");
-
-		// Arrange
-		Jardin terrainUsed = (Jardin)terre.getTerrain();
-
-		// Act
-		Jardin terrainCopy = Jardin.getInstance(terrainUsed.getColonne()+1, terrainUsed.getLigne()+1);
-		final boolean test = terrainUsed.equals(terrainCopy);
-
-		// Assert
-		assertTrue(test);
-
-		LOGGER.debug("testJardinSingletonAvecDifferentesLignesEtColonnes... Fin");
 	}
 
 	/**
@@ -131,23 +88,23 @@ public class AbstractTxtTerrainTest {
 
 		LOGGER.debug("testNombreColonnesSix... Fin");
 	}
-	
+
 	@Test
-	void testNombreChocolats(){
-		
+	public void testNombreChocolats(){
+
 		LOGGER.debug("testNombreChocolats... Debut");
-		
+
 		// Arrange
 		final int nbChocolatsAttendu = 3;
-		
+
 		// Act
 		final int ligne = 4;
 		final int colonne = 1;
 		final int nbChocolats = ((Chocolat)terre.getTerrain().getCase(colonne, ligne)).getNombre();
-		
+
 		// Assert
 		assertEquals(nbChocolatsAttendu, nbChocolats);
-		
+
 		LOGGER.debug("testNombreChocolats... Fin");
 	}
 
@@ -163,19 +120,20 @@ public class AbstractTxtTerrainTest {
 		int nbEnfant = 0;
 
 		/* Parcours du tableau */
-		
+
 		AbstractCase[][] table = terre.getTerrain().getTable();
-		
+
 		for(int i=0; i<table.length; i++)
 		{
 			for(int j=0; j<table[i].length; j++)
 			{
-				if(table[i][j] instanceof Chocolat)
+				if(table[i][j] instanceof Enfant)
 					nbEnfant ++;
 			}
 		}
 
 		// Assert
+		LOGGER.debug("nbEnfant = " + nbEnfant);
 		assertTrue(nbEnfant > 0);
 
 		LOGGER.debug("testAuMoinsUnEnfant... Fin");
@@ -194,7 +152,7 @@ public class AbstractTxtTerrainTest {
 
 		/* Parcours du tableau */
 		AbstractCase[][] table = terre.getTerrain().getTable();
-				
+
 		for(int i=0; i<table.length; i++)
 		{
 			for(int j=0; j<table[i].length; j++)
@@ -219,20 +177,21 @@ public class AbstractTxtTerrainTest {
 		LOGGER.debug("testParcoursEnfant... Debut");
 		// Arrange 
 
-		final int colonneAttendu = 1;
+		final int colonneAttendu = 2;
 		final int ligneAttendu = 3;
+		LOGGER.debug("Arrange");
 
 		// Act
 
-		terre.getTerrain().bougerEnfants();
+		terre.getTerrain().bougerEnfantsBoucle();
 		AbstractCase abstractCase = terre.getTerrain().getCase(colonneAttendu, ligneAttendu);
-
+		LOGGER.debug("Act");
 		// Assert
 
 		assertTrue(abstractCase instanceof Enfant);
 		LOGGER.debug("testParcoursEnfant... Fin");
 	}
-	
+
 	/**
 	 * On vérifie ce qu'il se passe lorsque l'enfant tente de sortir du terrrain
 	 * Il ne devrait pas pouvoir 
@@ -247,7 +206,7 @@ public class AbstractTxtTerrainTest {
 
 		final int colonne = 2;
 		final int ligne = 2;
-		
+
 		final Enfant paul = new Enfant(SUD, 
 				new ArrayList<Deplacement>(Arrays.asList(
 						AVANT, 
@@ -260,25 +219,26 @@ public class AbstractTxtTerrainTest {
 
 		// Act
 		final Terrain terrain = terre.getTerrain();
+		LOGGER.debug("0.0 = " + terrain.getCase(1, 1).getClass().getName());
+		terrain.effacerEnfant(0, 0);
 		terrain.setCase(colonne, ligne, paul);
-		terrain.bougerEnfants();
+		terrain.bougerEnfantsBoucle();
 
 		AbstractCase abstractCase = terrain.getCase(colonneAttendu, ligneAttendu);
 
 		// Assert
 		assertTrue(abstractCase instanceof Enfant && ((Enfant)abstractCase).equals(paul));
-		
+
 		LOGGER.debug("testParcoursEnfantHorsTerrain... Fin");
 	}
 
 	/**
 	 * Un objet ne devrait pas pouvoir ête ajouté hors du terrain
 	 */
-	@Test (expected = UnsupportedOperationException.class)
 	public void testAjoutObjetHorsTerrain(){
 
 		LOGGER.debug("testAjoutObjetHorsTerrain... Debut");
-		
+
 		// Arrange
 		final Terrain terrain = terre.getTerrain();
 		final int colonne = terrain.getColonne() + 1;
@@ -286,8 +246,11 @@ public class AbstractTxtTerrainTest {
 		final Rocher roc = new Rocher();
 
 		// Act
-		terrain.setCase(colonne, ligne, roc);
-		
+		boolean testFalse = terrain.setCase(colonne, ligne, roc);
+
+		// Assert
+		assertFalse(testFalse);
+
 		LOGGER.debug("testAjoutObjetHorsTerrain... Fin");
 	}
 
@@ -299,9 +262,8 @@ public class AbstractTxtTerrainTest {
 	 * et lors de la fonction bougerEnfants et de 
 	 * jamais autrement
 	 */
-	@Test (expected = UnsupportedOperationException.class)
 	public void testAjoutObjetSurAutreObjet(){
-		
+
 		LOGGER.debug("testAjoutObjetSurAutreObjet... Debut");
 
 		// Arrange
@@ -311,28 +273,32 @@ public class AbstractTxtTerrainTest {
 		final Rocher roc = new Rocher();
 
 		// Act
-		terrain.setCase(colonne, ligne, roc);
-		terrain.setCase(colonne, ligne, roc);
-		
+		boolean testTrue = terrain.setCase(colonne, ligne, roc);
+		boolean testFalse = terrain.setCase(colonne, ligne, roc);
+
+		// Assert
+		assertTrue(testTrue);
+		assertFalse(testFalse);
+
 		LOGGER.debug("testAjoutObjetSurAutreObjet... Fin");
 	}
-	
+
 	/**
 	 * On vérifie qu'on ne peut pas ajouter d'objet nul au tableau
 	 */
 	@Test (expected = UnsupportedOperationException.class)
 	public void testAjoutObjetNul(){
-		
+
 		LOGGER.debug("testAjoutObjetNul... Debut");
-		
+
 		// Arrange
 		final Terrain terrain = terre.getTerrain();
 		final int colonne = terrain.getColonne();
 		final int ligne = terrain.getLigne();
-		
+
 		// Act
 		terrain.setCase(colonne, ligne, null); // Cette case devrait être vide.
-		
+
 		LOGGER.debug("testAjoutObjetNul... Fin");
 	}
 
@@ -341,7 +307,7 @@ public class AbstractTxtTerrainTest {
 	 */
 	@Test
 	public void testAjoutObjetsurVide(){
-		
+
 		LOGGER.debug("testAjoutObjetsurVide... Debut");
 
 		// Arrange
@@ -353,19 +319,49 @@ public class AbstractTxtTerrainTest {
 		// Act
 		terrain.setCase(colonne, ligne, roc); // Cette case devrait etre vide
 		AbstractCase abstractCase = terrain.getCase(colonne, ligne);
-		
+
 		// Assert
 		assertTrue(abstractCase instanceof Rocher);
-		
+
 		LOGGER.debug("testAjoutObjetsurVide... Fin");
 	}
-	
+
 	@Test (expected = UnsupportedOperationException.class)
 	public void testDeplacementInexistant(){
 		LOGGER.debug("testDeplacementInexistant... Debut");
-		
+
 		new Enfant('s', "AZA", "Aza");
-		
+
 		LOGGER.debug("testDeplacementInexistant... Fin");
+	}
+
+	@Test 
+	public void testRecupChoco(){
+		LOGGER.debug("testRecupChoco... Debut");
+		// Arrange
+		final int colonneAttendu = 1;
+		final int ligneAttendu = 5;
+		final int colonne = 1;
+		final int ligne = 3;
+
+		final Enfant paul = new Enfant(SUD, 
+				new ArrayList<Deplacement>(Arrays.asList(
+						AVANT, 
+						AVANT)), "Paul");
+
+		// Act
+		final Terrain terrain = terre.getTerrain();
+		//terrain.effacerEnfant(0, 0);
+		terrain.setCase(colonne, ligne, paul);
+		terrain.bougerEnfantsBoucle();
+
+		AbstractCase abstractCase = terrain.getCase(colonneAttendu, ligneAttendu);
+		
+		LOGGER.debug("score = " +((Enfant)abstractCase).getScore());
+
+		// Assert
+		assertTrue(abstractCase instanceof Enfant && ((Enfant)abstractCase).getScore() == 3);
+
+		LOGGER.debug("testRecupChoco... Fin");
 	}
 }
