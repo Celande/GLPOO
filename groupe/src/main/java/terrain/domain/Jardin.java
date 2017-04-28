@@ -226,6 +226,7 @@ public class Jardin implements Terrain {
 					default:
 						break;
 				}
+				monEnfant[l].setOrientation(orientationEnfant);
 				table[ligneEnfantInit[l]][colonneEnfantInit[l]] = new CaseVide();
 				LOGGER.debug("effacement enfant precedent");
 				table[ligneEnfant[l]][colonneEnfant[l]] = monEnfant[l];
@@ -261,6 +262,12 @@ public class Jardin implements Terrain {
 		for (int m = 0; m<maxDeplacements; m++) {
 			bougerEnfants();
 			TerrainGUI.update(table,getLigne(),getColonne());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

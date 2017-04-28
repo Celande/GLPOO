@@ -27,7 +27,7 @@ import terrain.test.TxtTerrain;
 import terrain.domain.abstractcase.Rocher;
 
 public class TerrainGUI extends JFrame{
-	
+	private static JLabel[][] pan;
 	private final static String RESOURCES_PATH = "src/main/resources/";
 	static JFrame frame;
 	public TerrainGUI(){
@@ -35,22 +35,22 @@ public class TerrainGUI extends JFrame{
 		frame.setTitle("Easter Tacos");
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setContentPane(new JLabel(new ImageIcon(new ImageIcon(RESOURCES_PATH+"desert2cartoon.png").getImage().getScaledInstance(1200, 800,Image.SCALE_SMOOTH))));             
 		frame.setVisible(true);
-		frame.setContentPane(new JLabel(new ImageIcon(new ImageIcon(RESOURCES_PATH+"desert2cartoon.png").getImage().getScaledInstance(1900, 1070,Image.SCALE_SMOOTH))));
-		Jardin jardin=Jardin.getInstance(4,4);
+		
+		Jardin jardin=Jardin.getInstance(5,5);
 		jardin.setCase(1, 1, new Rocher());
-		jardin.setCase(1, 2, new Rocher());
-		jardin.setCase(1, 3, new Rocher());
-		jardin.setCase(2, 1, new Rocher());
 		jardin.setCase(2, 2, new Rocher());
 		jardin.setCase(3, 3, new Chocolat(6));
-		jardin.setCase(3, 2, new Enfant('E',"A","Pedro"));
-		update(jardin.getTable(),jardin.getLigne(),jardin.getColonne());
-		jardin.setCase(3, 4, new Chocolat(6));
-		update(jardin.getTable(),jardin.getLigne(),jardin.getColonne());
+		jardin.setCase(3, 2, new Enfant('E',"AAGDDADAAA","Pedro"));
+		update(jardin.getTable(),jardin.getLigne(),jardin.getColonne(),true);
+		jardin.bougerEnfantsBoucle();
 	}
-	public static void update(AbstractCase[][] table,int line,int column)
+	public static void update(AbstractCase[][] table,int line, int column){
+		update(table,line,column,false);
+	}
+	public static void update(AbstractCase[][] table,int line,int column,boolean init)
 	{
 		
 		Insets p=frame.getInsets();
@@ -69,15 +69,23 @@ public class TerrainGUI extends JFrame{
 			  htemp=wtemp=(int)w;
 		int k=1;
 		int j=column;
-		frame.getContentPane().removeAll();
-		JLabel[][] pan = new JLabel[i][j];    
-		frame.setLayout(new GridLayout(i,j));
+		/*frame.getContentPane().removeAll();
+		frame.getContentPane().revalidate();
+		frame.getContentPane().repaint();*/
+		if (init)
+		{
+			pan = new JLabel[i][j];    
+			frame.setLayout(new GridLayout(i,j));
+		}
 		for(int m=0;m<i;m++) 
 		{
 		   for(int n=0;n<j;n++) 
 		   {
-		      pan[m][n] = new JLabel();
-		      frame.add(pan[m][n]);
+			  if (init)
+			  {
+				  pan[m][n] = new JLabel();
+				  frame.add(pan[m][n]);
+			  }	 
 		      if (table[m][n] instanceof CaseVide)
 		      {
 		    	  pan[m][n].setIcon(null);
@@ -85,8 +93,6 @@ public class TerrainGUI extends JFrame{
 		      if (table[m][n] instanceof Chocolat)
 		      {
 		    	  pan[m][n].setHorizontalAlignment(JLabel.CENTER);
-		    	  pan[m][n].setIcon(null);
-
 		    	  pan[m][n].setIcon(new ImageIcon(new ImageIcon(RESOURCES_PATH+"tacos_cartoon.png").getImage().getScaledInstance(wtemp, htemp,Image.SCALE_SMOOTH)));
 		      }
 		      if (table[m][n] instanceof Rocher)
@@ -131,10 +137,10 @@ public class TerrainGUI extends JFrame{
 		      }
 		   }
 		}
+		frame.pack();
 	}
 	public static void main(String[] args){
 		    TerrainGUI terrainGUI = new TerrainGUI();
-		    terrainGUI.setVisible(true);
 	}       
 }
 
