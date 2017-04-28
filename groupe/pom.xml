@@ -24,7 +24,7 @@
 		</developer>
 		
 		<developer>
-			<name>Arthur </name>
+			<name>Arthur FAGOT</name>
 			<roles>
 				<role>Etudiant</role>
 			</roles>
@@ -49,6 +49,14 @@
 		
 		<developer>
 			<name>William PERRAULT</name>
+			<roles>
+				<role>Etudiant</role>
+			</roles>
+			<organization>ESIEA</organization>
+		</developer>
+	
+		<developer>
+			<name>Akya RAGUIDEAU</name>
 			<roles>
 				<role>Etudiant</role>
 			</roles>
