@@ -16,7 +16,7 @@ public class GameThread implements Runnable {
 	private TxtTerrain txtTerrain;
 	private Terrain terrain;
 	private static final Logger LOGGER = Logger.getLogger(GameThread.class);
-	private static final int SLEEP_DELAY = 100; // ms
+	private static final int SLEEP_DELAY = 1000; // ms
 
 	public GameThread(File fileTerrain, File fileEnfants){
 		// Initialisation des variables globales
