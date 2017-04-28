@@ -260,6 +260,7 @@ public class Jardin implements Terrain {
 		
 		for (int m = 0; m<maxDeplacements; m++) {
 			bougerEnfants();
+			TerrainGUI.update(table,getLigne(),getColonne());
 		}
 	}
 	
